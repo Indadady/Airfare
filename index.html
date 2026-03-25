@@ -81,6 +81,8 @@
         .calc-table th { padding: 4px 4px; border: 1px solid #cbd5e1; font-weight: bold; background-color: #f8fafc; color: #334155; }
         .calc-table td { padding: 4px 4px; border: 1px solid #cbd5e1; position: relative; line-height: 1.3; }
         .calc-subtotal { background-color: #f1f5f9; font-weight: bold; color: #1e293b; }
+        /* PDF 출력 시 합계 선 누락 방지를 위해 강제(important) 속성 부여 */
+        .calc-table .calc-subtotal td { border-top: 2px solid #1e293b !important; }
         
         /* 에디터 UI 요소 */
         [contenteditable="true"] { outline: none; padding: 2px 4px; transition: background 0.2s; min-height: 1em; border-radius: 2px; }
@@ -96,6 +98,7 @@
 
         @media print {
             @page { size: A4 portrait; margin: 0; } 
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; } /* PDF 출력 시 화면과 100% 동일한 선/배경색 유지 */
             body { background-color: white !important; margin: 0; }
             #sidebar, header, .print-hidden, .row-ctrl { display: none !important; }
             #main-content { margin: 0 !important; padding: 0 !important; width: 100% !important; display: block !important; }
@@ -130,19 +133,35 @@
         <!-- 좌측: 사이드바 입력부 -->
         <aside id="sidebar" class="w-full md:w-80 lg:w-[420px] bg-white border-r border-slate-200 p-6 overflow-y-auto flex flex-col gap-6 shadow-[10px_0_15px_-3px_rgba(0,0,0,0.05)] z-10 shrink-0 print-hidden">
             
+            <!-- 💾 데이터 관리 (템플릿 저장/불러오기) -->
+            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-sm">
+                <h2 class="text-sm font-bold text-slate-800 mb-3"><i class="fa-solid fa-database mr-1"></i> 데이터 템플릿 관리</h2>
+                <div class="flex gap-2">
+                    <button onclick="saveTemplate()" class="flex-1 bg-white text-emerald-700 font-bold py-2.5 px-2 rounded-lg border border-emerald-300 hover:bg-emerald-50 transition text-xs flex justify-center items-center gap-1 shadow-sm">
+                        <i class="fa-solid fa-download"></i> 현재 양식 저장
+                    </button>
+                    <button onclick="document.getElementById('file-upload').click()" class="flex-1 bg-white text-indigo-700 font-bold py-2.5 px-2 rounded-lg border border-indigo-300 hover:bg-indigo-50 transition text-xs flex justify-center items-center gap-1 shadow-sm">
+                        <i class="fa-solid fa-upload"></i> 파일 불러오기
+                    </button>
+                    <!-- 숨겨진 파일 업로드 인풋 -->
+                    <input type="file" id="file-upload" class="hidden" accept=".json" onchange="loadTemplate(event)">
+                </div>
+                <p class="text-[10px] text-slate-500 mt-2 leading-tight">작성하신 표지, 운임표 세부항목 및 금액, GDS 데이터가 모두 JSON 파일로 PC에 저장됩니다.</p>
+            </div>
+
             <!-- 문서 기본 정보 -->
             <div class="space-y-4">
                 <h2 class="text-sm font-bold text-blue-800 border-b border-slate-200 pb-2"><i class="fa-solid fa-file-signature mr-1"></i> 문서 기본 정보</h2>
                 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">수신 (To)</label>
-                    <input type="text" id="in_receiver" value="일반 성인 단체" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
+                    <input type="text" id="in_receiver" value="정선군청 환경과" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">출발일 (Dep.Date)</label>
-                        <input type="date" id="in_depDate" value="2025-08-16" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" onchange="updateDoc()">
+                        <input type="date" id="in_depDate" value="2026-05-12" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" onchange="updateDoc()">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1">발급일자</label>
@@ -152,17 +171,17 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">여행자 성명 (대표자 외 명수)</label>
-                    <input type="text" id="in_paxName" value="강성준 (KANG/SEONGJUN)외 55명" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
+                    <input type="text" id="in_paxName" value="김종범 (KIM/JONGBEOM)외 5명" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">예약번호 (PNR)</label>
-                    <input type="text" id="in_pnr" value="(KE) 6EDPXL, 6EERAG" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
+                    <input type="text" id="in_pnr" value="(LJ) EXSO7E" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">구간 (Routing)</label>
-                    <input type="text" id="in_routing" value="인천(ICN) - 후쿠오카(FUK) 왕복" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
+                    <input type="text" id="in_routing" value="인천(ICN) - 기타큐슈(KKJ) 왕복" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
                 </div>
             </div>
 
@@ -172,12 +191,12 @@
                     <span><i class="fa-solid fa-plane-departure mr-1"></i> 탑승자 및 항공스케줄 (GDS 복사)</span>
                 </h2>
                 <p class="text-[10px] text-slate-500 leading-tight">TOPAS, SABRE 등에서 예약 정보(이름, 여정)를 복사하여 그대로 붙여넣으세요. A4 하단에 원본 포맷 그대로 출력됩니다.</p>
-                <textarea id="in_pnrRaw" rows="8" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-emerald-500 bg-slate-50" oninput="updateDoc()">6EERAG
-1.KANG/SEONGJUN MR 2.KIM/SUNGMIN MR 3.KIM/YEONJUN MR 
-4.KIM/EUNHYEON MS 5.KIM/JUHEON MR 6.MOON/VITCHEUN MS
+                <textarea id="in_pnrRaw" rows="8" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-emerald-500 bg-slate-50" oninput="updateDoc()">EXSO7E
+1.KIM/JONGBEOM MR 2.JEON/CHANYEONG MR 3.YU/JONGDEOG MR
+4.JEON/YEONGPYO MR 5.PARK/CHUNGIN MR 6.LEE/JINHO MR(영문)
 
-33 KE 789 L 16AUG 6 ICNFUK HK32 1345 1515 16AUG E KE.6EERAG
-34 KE 790 U 22AUG 5 FUKICN HK32 1625 1755 22AUG E KE.6EERAG</textarea>
+7 LJ 349 A 12MAY 2 ICNKKJ HK6 1545 1715 12MAY E LJ/PB3LG2
+8 LJ 350 Y 15MAY 5 KKJICN HK6 1815 1940 15MAY E LJ/PB3LG2</textarea>
             </div>
 
             <!-- 대표자 선택 -->
@@ -190,7 +209,7 @@
             </div>
 
             <!-- 도움말 박스 -->
-            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mt-4">
+            <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mt-4 mb-10">
                 <h3 class="font-bold text-indigo-800 text-xs mb-2"><i class="fa-solid fa-circle-info"></i> 사용 팁 (운임표 작성)</h3>
                 <p class="text-[11px] text-indigo-700 leading-relaxed">우측 A4 용지 미리보기 영역의 <b>[운임 정보 (Fare Information)] 표</b> 안쪽을 클릭하시면 엑셀처럼 <b>직접 글씨와 숫자를 수정</b>할 수 있습니다. 단가와 수량을 입력하면 총액이 자동 계산됩니다.</p>
             </div>
@@ -201,7 +220,7 @@
             
             <div class="a4-page">
                 
-                <!-- 헤더 (로고 크기 h-12로 대폭 확대 및 문서 번호) -->
+                <!-- 헤더 -->
                 <div class="flex justify-between items-start mb-2 shrink-0">
                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEitI-Z-hD82keOJ1AqHw-VTZjpw2U-O5UjtV9h3zblyG0wjsVfBWe9X9o0Q_Spctrt7krkd9qXO0xKTmGJLw4gyMZrRqpshKMFttnyx6OcC8-IGz3XLUZpGQOnRqVdol8jz5HuoDLqsEifnVRhcjUJHm13Sz8JrX9aPswMNUwZPvGtJEnQjhc2PiXlo-B8" class="h-12 object-contain" alt="Tourmaker Logo">
                     <div class="text-right text-[8.5pt] text-slate-500 font-roboto">
@@ -261,11 +280,22 @@
                             </tr>
                         </thead>
                         <tbody id="tbody-fare">
+                            <!-- 초기 세팅 (정선군청 PDF 기반) -->
                             <tr class="fare-row">
                                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">Economy Class</td>
-                                <td contenteditable="true" class="text-left pl-3 bg-white out_routing_desc">인천 - 후쿠오카 왕복</td>
-                                <td contenteditable="true" class="col-price bg-white font-roboto">466,500</td>
-                                <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">56</td>
+                                <td contenteditable="true" class="text-left pl-3 bg-white out_routing_desc" data-modified="true">인천(ICN) - 기타큐슈(KKJ) 왕복</td>
+                                <td contenteditable="true" class="col-price bg-white font-roboto">247,600</td>
+                                <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">6</td>
+                                <td class="bg-white relative">
+                                    <span class="font-bold col-sum text-right pr-2 block font-roboto tracking-wide text-[9.5pt]"></span>
+                                    <div class="row-ctrl print-hidden"><button onclick="removeFareRow(this)" class="text-red-500 hover:bg-red-50 px-1 rounded"><i class="fa-solid fa-minus"></i></button></div>
+                                </td>
+                            </tr>
+                            <tr class="fare-row">
+                                <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">Economy Class</td>
+                                <td contenteditable="true" class="text-left pl-3 bg-white out_routing_desc" data-modified="true">발권수수료</td>
+                                <td contenteditable="true" class="col-price bg-white font-roboto">20,000</td>
+                                <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">6</td>
                                 <td class="bg-white relative">
                                     <span class="font-bold col-sum text-right pr-2 block font-roboto tracking-wide text-[9.5pt]"></span>
                                     <div class="row-ctrl print-hidden"><button onclick="removeFareRow(this)" class="text-red-500 hover:bg-red-50 px-1 rounded"><i class="fa-solid fa-minus"></i></button></div>
@@ -273,7 +303,7 @@
                             </tr>
                         </tbody>
                         <tbody>
-                            <tr class="calc-subtotal border-t-2 border-slate-800">
+                            <tr class="calc-subtotal">
                                 <td colspan="4" class="py-1.5 text-right pr-4 font-bold tracking-widest font-roboto text-[10pt]">
                                     Grand Total (KRW)
                                 </td>
@@ -289,7 +319,7 @@
                 <div class="shrink-0 mb-3">
                     <div class="bg-slate-50 border border-slate-300 p-2 rounded-sm mb-2">
                         <span class="font-bold text-[9pt] text-slate-800 mr-2">비고 (Notes) :</span> 
-                        <span class="text-[8.5pt] text-slate-600" contenteditable="true">상기 요금은 발권일 기준 유류할증료 및 텍스 변동에 따라 총 운임이 달라질 수 있습니다.</span>
+                        <span class="text-[8.5pt] text-slate-600" contenteditable="true" id="in_notes">상기 요금은 발권일 기준 유류할증료 및 텍스 변동에 따라 총 운임이 달라질 수 있습니다.</span>
                     </div>
 
                     <div class="text-center space-y-0.5 mb-1">
@@ -320,12 +350,14 @@
                     </div>
                 </div>
 
-                <!-- 기존 우측 하단 투어메이커 로고 삭제됨 -->
             </div>
         </main>
     </div>
 
     <script>
+        // 전역 상태 변수
+        let currentRep = 'lee';
+
         // --- 1. 대표자(직인) 설정 ---
         const reps = {
             lee: { 
@@ -341,6 +373,7 @@
         };
 
         function setRep(rep) {
+            currentRep = rep;
             document.getElementById('btn-rep-lee').className = rep === 'lee' ? 'bg-blue-100 text-blue-800 font-bold py-2 rounded-lg border border-blue-300 transition text-sm' : 'bg-white text-slate-600 font-bold py-2 rounded-lg border border-slate-300 hover:bg-slate-50 transition text-sm';
             document.getElementById('btn-rep-heo').className = rep === 'heo' ? 'bg-blue-100 text-blue-800 font-bold py-2 rounded-lg border border-blue-300 transition text-sm' : 'bg-white text-slate-600 font-bold py-2 rounded-lg border border-slate-300 hover:bg-slate-50 transition text-sm';
             
@@ -471,14 +504,125 @@
             }
         });
 
-        // --- 4. 초기화 실행 ---
+        // --- 4. 템플릿 저장 (Save JSON) ---
+        function saveTemplate() {
+            // 현재 테이블 내 운임 데이터 추출
+            const fares = [];
+            document.querySelectorAll('#tbody-fare tr.fare-row').forEach(row => {
+                const cols = row.querySelectorAll('td[contenteditable="true"]');
+                fares.push({
+                    item: cols[0].innerText,
+                    desc: cols[1].innerText,
+                    price: parseNum(cols[2].innerText),
+                    qty: parseNum(cols[3].innerText)
+                });
+            });
+
+            // 전체 데이터 객체 구성
+            const data = {
+                receiver: document.getElementById('in_receiver').value,
+                depDate: document.getElementById('in_depDate').value,
+                issueDate: document.getElementById('in_issueDate').value,
+                paxName: document.getElementById('in_paxName').value,
+                pnr: document.getElementById('in_pnr').value,
+                routing: document.getElementById('in_routing').value,
+                pnrRaw: document.getElementById('in_pnrRaw').value,
+                rep: currentRep, // 현재 선택된 대표자
+                notes: document.getElementById('in_notes').innerText, // 비고란
+                fares: fares
+            };
+
+            // JSON 파일 생성 및 다운로드 트리거
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href", dataStr);
+            
+            // 파일명 규칙: 템플릿_수신처명_날짜.json
+            const dateStr = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+            const safeReceiver = data.receiver.replace(/[^a-zA-Z0-9가-힣]/g, '_') || '미지정';
+            const filename = `운임증명서_템플릿_${safeReceiver}_${dateStr}.json`;
+            
+            downloadAnchorNode.setAttribute("download", filename);
+            document.body.appendChild(downloadAnchorNode); 
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        }
+
+        // --- 5. 템플릿 불러오기 (Load JSON) ---
+        function loadTemplate(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // 기본 텍스트 폼 복원
+                    if(data.receiver !== undefined) document.getElementById('in_receiver').value = data.receiver;
+                    if(data.depDate !== undefined) document.getElementById('in_depDate').value = data.depDate;
+                    if(data.issueDate !== undefined) document.getElementById('in_issueDate').value = data.issueDate;
+                    if(data.paxName !== undefined) document.getElementById('in_paxName').value = data.paxName;
+                    if(data.pnr !== undefined) document.getElementById('in_pnr').value = data.pnr;
+                    if(data.routing !== undefined) document.getElementById('in_routing').value = data.routing;
+                    if(data.pnrRaw !== undefined) document.getElementById('in_pnrRaw').value = data.pnrRaw;
+                    
+                    // 대표자 선택 상태 복원
+                    if(data.rep) setRep(data.rep);
+                    
+                    // 비고란 복원
+                    if(data.notes !== undefined) document.getElementById('in_notes').innerText = data.notes;
+
+                    // 운임 테이블 복원
+                    const tbody = document.getElementById('tbody-fare');
+                    tbody.innerHTML = ''; // 기존 행 삭제
+                    
+                    if(data.fares && data.fares.length > 0) {
+                        data.fares.forEach(fare => {
+                            const tr = document.createElement('tr');
+                            tr.className = "fare-row";
+                            tr.innerHTML = `
+                                <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">${fare.item}</td>
+                                <td contenteditable="true" class="text-left pl-3 bg-white out_routing_desc" data-modified="true">${fare.desc}</td>
+                                <td contenteditable="true" class="col-price bg-white font-roboto">${formatNum(fare.price)}</td>
+                                <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">${formatNum(fare.qty)}</td>
+                                <td class="bg-white relative">
+                                    <span class="font-bold col-sum text-right pr-2 block font-roboto tracking-wide text-[9.5pt]"></span>
+                                    <div class="row-ctrl print-hidden"><button onclick="removeFareRow(this)" class="text-red-500 hover:bg-red-50 px-1 rounded"><i class="fa-solid fa-minus"></i></button></div>
+                                </td>
+                            `;
+                            tbody.appendChild(tr);
+                        });
+                    } else {
+                        addFareRow(); // 데이터가 없을 경우 기본 1줄 추가
+                    }
+
+                    // 복원 완료 후 화면 동기화
+                    updateDoc();
+                    calcFareTable();
+                    
+                    alert(`✅ [${data.receiver || '지정 안됨'}] 템플릿을 성공적으로 불러왔습니다.`);
+                } catch (error) {
+                    alert('🚨 템플릿 파일을 읽는 중 오류가 발생했습니다. 투어메이커 시스템에서 다운로드한 JSON 파일인지 확인해주세요.');
+                    console.error(error);
+                }
+                
+                // 파일 인풋 초기화 (같은 파일을 다시 선택할 수 있도록)
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        // --- 6. 초기화 실행 ---
         document.addEventListener('DOMContentLoaded', () => {
-            // 오늘 날짜 세팅
-            const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            document.getElementById('in_issueDate').value = `${yyyy}-${mm}-${dd}`;
+            // 오늘 날짜 세팅 (값이 비어있을 경우에만)
+            if(!document.getElementById('in_issueDate').value) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                document.getElementById('in_issueDate').value = `${yyyy}-${mm}-${dd}`;
+            }
 
             setRep('lee');
             updateDoc();
