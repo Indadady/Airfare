@@ -217,7 +217,7 @@
             <div class="a4-page">
                 
                 <!-- 헤더 -->
-                <div class="flex justify-between items-center mb-4 shrink-0">
+                <div class="flex justify-between items-center mb-10 shrink-0">
                     <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" class="h-9 object-contain" alt="Tourmaker Logo">
                     <div class="text-right text-[8.5pt] text-slate-500 font-roboto">
                         Date : <span class="out_issueDate font-bold"></span><br>
@@ -279,7 +279,7 @@
                             <!-- 초기 세팅 (정선군청 PDF 기반) -->
                             <tr class="fare-row">
                                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">Economy Class</td>
-                                <td contenteditable="true" class="text-left pl-3 bg-white" data-sync-routing="true">인천(ICN) - 기타큐슈(KKJ) 왕복</td>
+                                <td contenteditable="true" class="text-center bg-white" data-sync-routing="true">인천(ICN) - 기타큐슈(KKJ) 왕복</td>
                                 <td contenteditable="true" class="col-price bg-white font-roboto">247,600</td>
                                 <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">6</td>
                                 <td class="bg-white relative">
@@ -289,7 +289,7 @@
                             </tr>
                             <tr class="fare-row">
                                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">Economy Class</td>
-                                <td contenteditable="true" class="text-left pl-3 bg-white">발권수수료</td>
+                                <td contenteditable="true" class="text-center bg-white">발권수수료</td>
                                 <td contenteditable="true" class="col-price bg-white font-roboto">20,000</td>
                                 <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">6</td>
                                 <td class="bg-white relative">
@@ -453,7 +453,7 @@
             tr.className = "fare-row";
             tr.innerHTML = `
                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">Economy Class</td>
-                <td contenteditable="true" class="text-left pl-3 bg-white" data-modified="true">내용 입력</td>
+                <td contenteditable="true" class="text-center bg-white" data-modified="true">내용 입력</td>
                 <td contenteditable="true" class="col-price bg-white font-roboto">0</td>
                 <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">1</td>
                 <td class="bg-white relative">
@@ -589,7 +589,7 @@
                             const editedAttr = (index === 0 && fare.desc !== data.routing) ? 'data-user-edited="true"' : '';
                             tr.innerHTML = `
                                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">${fare.item}</td>
-                                <td contenteditable="true" class="text-left pl-3 bg-white" ${syncAttr} ${editedAttr}>${fare.desc}</td>
+                                <td contenteditable="true" class="text-center bg-white" ${syncAttr} ${editedAttr}>${fare.desc}</td>
                                 <td contenteditable="true" class="col-price bg-white font-roboto">${formatNum(fare.price)}</td>
                                 <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">${formatNum(fare.qty)}</td>
                                 <td class="bg-white relative">
