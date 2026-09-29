@@ -44,8 +44,8 @@
         }
 
         /* 폰트 및 여백 압축 */
-        .doc-title-eng { font-size: 20pt; font-weight: 900; color: #1e293b; text-align: center; letter-spacing: 2px; margin-bottom: 0;}
-        .doc-title-kor { font-size: 12pt; font-weight: 700; color: #475569; text-align: center; letter-spacing: 10px; margin-bottom: 2mm;}
+        .doc-title-eng { font-size: 20pt; font-weight: 900; color: #1e293b; text-align: center; letter-spacing: 2px; margin-bottom: 1mm; line-height: 1.15;}
+        .doc-title-kor { font-size: 12pt; font-weight: 700; color: #475569; text-align: center; letter-spacing: 10px; margin-bottom: 4mm; line-height: 1.4;}
         
         /* 전자도장 고정 박스 시스템 */
         .stamp-box {
@@ -73,12 +73,12 @@
 
         /* 자동계산 및 정보 테이블 스타일 */
         .info-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; text-align: left; margin-bottom: 0; border-top: 2px solid #1e293b;}
-        .info-table th { padding: 4px 10px; font-weight: bold; background-color: #f8fafc; color: #334155; border-bottom: 1px solid #cbd5e1; width: 25%; }
-        .info-table td { padding: 4px 10px; border-bottom: 1px solid #cbd5e1; color: #0f172a; }
+        .info-table th { padding: 8px 12px; font-weight: bold; background-color: #f8fafc; color: #334155; border-bottom: 1px solid #cbd5e1; width: 25%; line-height: 1.35; }
+        .info-table td { padding: 8px 12px; border-bottom: 1px solid #cbd5e1; color: #0f172a; line-height: 1.5; }
 
         .calc-table { width: 100%; border-collapse: collapse; font-size: 9pt; text-align: center; border-top: 2px solid #1e293b; border-bottom: 2px solid #1e293b; table-layout: fixed; }
-        .calc-table th { padding: 4px 4px; border: 1px solid #cbd5e1; font-weight: bold; background-color: #f8fafc; color: #334155; }
-        .calc-table td { padding: 4px 4px; border: 1px solid #cbd5e1; line-height: 1.3; }
+        .calc-table th { padding: 8px 6px; border: 1px solid #cbd5e1; font-weight: bold; background-color: #f8fafc; color: #334155; line-height: 1.4; }
+        .calc-table td { padding: 8px 6px; border: 1px solid #cbd5e1; line-height: 1.55; }
         
         /* 에디터 UI 요소 */
         [contenteditable="true"] { outline: none; padding: 2px 4px; transition: background 0.2s; min-height: 1em; border-radius: 2px; }
@@ -90,7 +90,7 @@
         tr:hover .row-ctrl { opacity: 1; }
 
         /* GDS 예약정보 텍스트 영역 */
-        .pnr-text { font-family: 'Courier New', monospace; font-size: 8pt; line-height: 1.4; color: #334155; white-space: pre-wrap; word-break: break-all; }
+        .pnr-text { font-family: 'Courier New', monospace; font-size: 8pt; line-height: 1.65; color: #334155; white-space: pre-wrap; word-break: break-all; }
 
         @media print {
             @page { size: A4 portrait; margin: 0; } 
@@ -177,7 +177,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-slate-700 mb-1">구간 (Routing)</label>
-                    <input type="text" id="in_routing" value="인천(ICN) - 기타큐슈(KKJ) 왕복" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc()">
+                    <input type="text" id="in_routing" value="인천(ICN) - 기타큐슈(KKJ) 왕복" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateDoc(event)">
                 </div>
             </div>
 
@@ -217,8 +217,8 @@
             <div class="a4-page">
                 
                 <!-- 헤더 -->
-                <div class="flex justify-between items-start mb-2 shrink-0">
-                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" class="h-12 object-contain" alt="Tourmaker Logo">
+                <div class="flex justify-between items-center mb-4 shrink-0">
+                    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgHfgIX70O5k6Anuo0UgALIdaG9jSga9auHu3uyz0uEirylGPAJnjN_qQbvEGMUvPqUQf_g9FMNUHRxlDcUBf4vZ3Mpy4TnA9WxbmzWYK11gt2zuy_Irl4wctNFjcjLyPo0GPXV792o_J7L9guRMuDfeC1gy7USwywjYbECZgzcsHybuGRRAXAnO1eNmP8/s320/logo.png" class="h-9 object-contain" alt="Tourmaker Logo">
                     <div class="text-right text-[8.5pt] text-slate-500 font-roboto">
                         Date : <span class="out_issueDate font-bold"></span><br>
                         Ref No : TM-FARE-<span class="out_issueDate_short"></span>
@@ -226,17 +226,17 @@
                 </div>
 
                 <!-- 타이틀 -->
-                <div class="text-center shrink-0 border-b-2 border-slate-800 pb-2 mb-3">
+                <div class="text-center shrink-0 border-b-2 border-slate-800 pb-3 mb-5">
                     <h1 class="doc-title-eng font-roboto">FARE CERTIFICATE</h1>
                     <h2 class="doc-title-kor">항공 운임 증명서</h2>
-                    <div class="text-left text-[10pt] font-bold mt-2">
+                    <div class="text-left text-[10pt] font-bold mt-3 leading-relaxed">
                         수신 (To) : <span class="out_receiver underline underline-offset-4"></span>
                     </div>
                 </div>
 
                 <!-- 1. Passenger Information -->
-                <div class="shrink-0 mb-3">
-                    <div class="flex justify-between items-end mb-1">
+                <div class="shrink-0 mb-5">
+                    <div class="flex justify-between items-end mb-2">
                         <h3 class="font-bold text-[10pt] text-slate-800"><i class="fa-solid fa-user-check mr-1"></i> 여행자 정보 <span class="text-[8pt] font-normal text-slate-500 ml-1">Passenger Information</span></h3>
                         <div class="text-[9pt] font-bold">출발일(Dep.Date) : <span class="out_depDate text-blue-700"></span></div>
                     </div>
@@ -259,8 +259,8 @@
                 </div>
 
                 <!-- 2. Fare Information (Editable & Auto Calc) -->
-                <div class="shrink-0 mb-3">
-                    <div class="flex justify-between items-center mb-1">
+                <div class="shrink-0 mb-5">
+                    <div class="flex justify-between items-center mb-2">
                         <h3 class="font-bold text-[10pt] text-slate-800"><i class="fa-solid fa-won-sign mr-1"></i> 운임 정보 <span class="text-[8pt] font-normal text-slate-500 ml-1">Fare Information</span></h3>
                         <button onclick="addFareRow()" class="print-hidden text-[9px] bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold hover:bg-indigo-200"><i class="fa-solid fa-plus"></i> 운임 추가</button>
                     </div>
@@ -279,7 +279,7 @@
                             <!-- 초기 세팅 (정선군청 PDF 기반) -->
                             <tr class="fare-row">
                                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">Economy Class</td>
-                                <td contenteditable="true" class="text-left pl-3 bg-white out_routing_desc" data-modified="true">인천(ICN) - 기타큐슈(KKJ) 왕복</td>
+                                <td contenteditable="true" class="text-left pl-3 bg-white" data-sync-routing="true">인천(ICN) - 기타큐슈(KKJ) 왕복</td>
                                 <td contenteditable="true" class="col-price bg-white font-roboto">247,600</td>
                                 <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">6</td>
                                 <td class="bg-white relative">
@@ -289,7 +289,7 @@
                             </tr>
                             <tr class="fare-row">
                                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">Economy Class</td>
-                                <td contenteditable="true" class="text-left pl-3 bg-white out_routing_desc" data-modified="true">발권수수료</td>
+                                <td contenteditable="true" class="text-left pl-3 bg-white">발권수수료</td>
                                 <td contenteditable="true" class="col-price bg-white font-roboto">20,000</td>
                                 <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">6</td>
                                 <td class="bg-white relative">
@@ -302,32 +302,32 @@
                     
                     <!-- 🚨 GPT 제안 적용: 합계 라인을 표 바깥의 Div 블록으로 분리하여 버그 원천 차단 -->
                     <div class="flex border-b-2 border-slate-800 border-l border-r border-slate-300" style="break-inside: avoid; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important;">
-                        <div class="w-[80%] bg-[#f1f5f9] font-bold text-right pr-4 py-1.5 text-[10pt] tracking-widest font-roboto text-slate-800">
+                        <div class="w-[80%] bg-[#f1f5f9] font-bold text-right pr-4 py-2.5 text-[10pt] tracking-widest font-roboto text-slate-800 leading-relaxed">
                             Grand Total (KRW)
                         </div>
-                        <div class="w-[20%] bg-[#eff6ff] text-right pr-2 py-1.5 text-[11pt] font-black text-blue-700 font-roboto tracking-wide border-l border-slate-300">
+                        <div class="w-[20%] bg-[#eff6ff] text-right pr-2 py-2.5 text-[11pt] font-black text-blue-700 font-roboto tracking-wide border-l border-slate-300 leading-relaxed">
                             <span id="grand-total">0</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- 3. Notes & Declaration -->
-                <div class="shrink-0 mb-3">
-                    <div class="bg-slate-50 border border-slate-300 p-2 rounded-sm mb-2">
+                <div class="shrink-0 mb-5">
+                    <div class="bg-slate-50 border border-slate-300 px-3 py-2.5 rounded-sm mb-3 leading-relaxed">
                         <span class="font-bold text-[9pt] text-slate-800 mr-2">비고 (Notes) :</span> 
                         <span class="text-[8.5pt] text-slate-600" contenteditable="true" id="in_notes">상기 요금은 발권일 기준 유류할증료 및 텍스 변동에 따라 총 운임이 달라질 수 있습니다.</span>
                     </div>
 
-                    <div class="text-center space-y-0.5 mb-1">
-                        <p class="font-roboto font-bold text-[8pt] text-slate-600">▶ THIS IS TO CERTIFY THAT THE ABOVE MENTIONED FARE IS CORRECT AND TRUE ACCORDING TO INT'L TRAVEL TARIFF AND REGULATION.</p>
-                        <p class="font-bold text-[9pt] text-slate-800">상기 요금은 국제항공 여행 요금표 및 규정에 의거 틀림없음을 증명합니다.</p>
-                        <p class="text-[8pt] text-slate-500">단, 정부 및 해당국의 요금 및 환율 변경 등의 사유로 변경되어 질 수 있습니다.</p>
+                    <div class="text-center space-y-1.5 mb-1">
+                        <p class="font-roboto font-bold text-[8pt] text-slate-600 leading-relaxed">▶ THIS IS TO CERTIFY THAT THE ABOVE MENTIONED FARE IS CORRECT AND TRUE ACCORDING TO INT'L TRAVEL TARIFF AND REGULATION.</p>
+                        <p class="font-bold text-[9pt] text-slate-800 leading-relaxed">상기 요금은 국제항공 여행 요금표 및 규정에 의거 틀림없음을 증명합니다.</p>
+                        <p class="text-[8pt] text-slate-500 leading-relaxed">단, 정부 및 해당국의 요금 및 환율 변경 등의 사유로 변경되어 질 수 있습니다.</p>
                     </div>
                 </div>
 
                 <!-- 4. PNR Data Area (Detailed info) -->
-                <div class="flex-1 flex flex-col border-t border-dashed border-slate-400 pt-2 mb-4">
-                    <h3 class="font-bold text-[9.5pt] text-slate-800 mb-1">* 예약 상세 정보 (GDS Data)</h3>
+                <div class="flex-1 flex flex-col border-t border-dashed border-slate-400 pt-3 mb-5">
+                    <h3 class="font-bold text-[9.5pt] text-slate-800 mb-2 leading-relaxed">* 예약 상세 정보 (GDS Data)</h3>
                     <!-- 사이드바에서 복사한 텍스트가 여기에 뿌려짐 -->
                     <div class="pnr-text flex-1" id="out_pnrRaw"></div>
                 </div>
@@ -380,16 +380,22 @@
         }
 
         // --- 2. 기본 정보 데이터 바인딩 ---
-        function updateDoc() {
+        function updateDoc(evt) {
             document.querySelector('.out_receiver').innerText = document.getElementById('in_receiver').value;
             document.querySelector('.out_paxName').innerText = document.getElementById('in_paxName').value;
             document.querySelector('.out_pnr').innerText = document.getElementById('in_pnr').value;
             
             const routing = document.getElementById('in_routing').value;
+            const fromRouting = !!(evt && evt.target && evt.target.id === 'in_routing');
             document.querySelector('.out_routing').innerText = routing;
-            // 최초에만 운임표 Description에 자동 삽입 (사용자가 덮어쓰면 유지)
-            document.querySelectorAll('.out_routing_desc').forEach(el => {
-                if(!el.dataset.modified) el.innerText = routing;
+            // 왼쪽 구간 입력 → 여정란 + 운임표 첫 줄 내용에 바로 반영
+            // 증명서에서 내용을 직접 고친 뒤에는, 구간 칸을 다시 입력할 때만 덮어쓴다
+            document.querySelectorAll('[data-sync-routing="true"]').forEach(el => {
+                if (document.activeElement === el) return;
+                if (fromRouting || el.dataset.userEdited !== 'true') {
+                    el.innerText = routing;
+                    if (fromRouting) delete el.dataset.userEdited;
+                }
             });
 
             // 날짜 포맷 (Dep Date)
@@ -479,7 +485,9 @@
         }, true);
 
         document.getElementById('fare-table').addEventListener('input', function(e) {
-            if(e.target.classList.contains('out_routing_desc')) e.target.dataset.modified = "true";
+            if(e.target.dataset.syncRouting === 'true') {
+                e.target.dataset.userEdited = 'true';
+            }
             if(e.target.hasAttribute('contenteditable')) calcFareTable();
         });
 
@@ -574,12 +582,14 @@
                     tbody.innerHTML = ''; // 기존 행 삭제
                     
                     if(data.fares && data.fares.length > 0) {
-                        data.fares.forEach(fare => {
+                        data.fares.forEach((fare, index) => {
                             const tr = document.createElement('tr');
                             tr.className = "fare-row";
+                            const syncAttr = index === 0 ? 'data-sync-routing="true"' : '';
+                            const editedAttr = (index === 0 && fare.desc !== data.routing) ? 'data-user-edited="true"' : '';
                             tr.innerHTML = `
                                 <td contenteditable="true" class="bg-white font-roboto font-bold align-middle text-slate-700">${fare.item}</td>
-                                <td contenteditable="true" class="text-left pl-3 bg-white out_routing_desc" data-modified="true">${fare.desc}</td>
+                                <td contenteditable="true" class="text-left pl-3 bg-white" ${syncAttr} ${editedAttr}>${fare.desc}</td>
                                 <td contenteditable="true" class="col-price bg-white font-roboto">${formatNum(fare.price)}</td>
                                 <td contenteditable="true" class="col-qty bg-white font-roboto font-bold">${formatNum(fare.qty)}</td>
                                 <td class="bg-white relative">
