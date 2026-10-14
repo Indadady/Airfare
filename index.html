@@ -112,8 +112,11 @@
         .tx-table td.left { text-align: left; }
         .tx-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
         .tx-table tr.total td { background: #f7f7f7; font-weight: bold; }
-        .tx-party th { width: 22%; }
-        .tx-party td { text-align: left; line-height: 1.7; }
+        .tx-party { table-layout: fixed; }
+        .tx-party .role { width: 11%; background: #f2f6fb; color: #004098; font-weight: 700; writing-mode: horizontal-tb; vertical-align: middle; }
+        .tx-party .lbl { width: 12%; background: #f8fafc; color: #475569; font-weight: 600; font-size: 11px; white-space: nowrap; }
+        .tx-party .val { text-align: left; font-size: 12px; line-height: 1.45; word-break: keep-all; }
+        .tx-party .val.strong { font-weight: 700; color: #0f172a; }
         .tx-confirm { margin-top: 18px; line-height: 1.8; font-size: 13px; }
         .tx-sign { margin-top: 32px; text-align: right; line-height: 2; position: relative; }
         .tx-sign b { font-size: 15px; }
@@ -412,15 +415,57 @@
                     <label class="block text-xs font-bold text-slate-700 mb-1">발행일</label>
                     <input type="date" id="tx_issueDate" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" onchange="updateTxDoc()">
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">공급자 (발권처)</label>
-                    <textarea id="tx_supplier" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateTxDoc()">(주)플라이유니티 (사업자번호 629-88-02559)
-대표 김대현 / 강원 강릉시 경강로 2141 (옥천동) / 070-4888-5077</textarea>
+
+                <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 space-y-2">
+                    <h3 class="text-xs font-bold text-sky-900">공급자 (발권처)</h3>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">상호</label>
+                        <input type="text" id="tx_sup_name" value="(주)플라이유니티" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">사업자번호</label>
+                            <input type="text" id="tx_sup_biz" value="629-88-02559" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">대표</label>
+                            <input type="text" id="tx_sup_ceo" value="김대현" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">주소</label>
+                        <input type="text" id="tx_sup_addr" value="강원 강릉시 경강로 2141 (옥천동)" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">연락처</label>
+                        <input type="text" id="tx_sup_tel" value="070-4888-5077" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">공급받는자 (계약여행사)</label>
-                    <textarea id="tx_buyer" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateTxDoc()">주식회사 투어메이커 (사업자번호 473-81-03183)
-대표 이재명 / 강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층</textarea>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                    <h3 class="text-xs font-bold text-slate-800">공급받는자 (계약여행사)</h3>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">상호</label>
+                        <input type="text" id="tx_buy_name" value="주식회사 투어메이커" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">사업자번호</label>
+                            <input type="text" id="tx_buy_biz" value="473-81-03183" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">대표</label>
+                            <input type="text" id="tx_buy_ceo" value="이재명" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">주소</label>
+                        <input type="text" id="tx_buy_addr" value="강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">연락처</label>
+                        <input type="text" id="tx_buy_tel" value="" placeholder="선택 입력" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                    </div>
                 </div>
             </div>
 
@@ -474,13 +519,35 @@
                 <div class="tx-sub">발행일 : <span id="out_tx_issueDate">____년 __월 __일</span></div>
 
                 <table class="tx-table tx-party">
+                    <colgroup>
+                        <col style="width:10%"><col style="width:12%"><col style="width:28%">
+                        <col style="width:10%"><col style="width:12%"><col style="width:28%">
+                    </colgroup>
                     <tr>
-                        <th>공급자</th>
-                        <td id="out_tx_supplier" class="left"></td>
+                        <th class="role" rowspan="4">공급자</th>
+                        <th class="lbl">상호</th>
+                        <td class="val strong" id="out_sup_name"></td>
+                        <th class="role" rowspan="4">공급<br>받는자</th>
+                        <th class="lbl">상호</th>
+                        <td class="val strong" id="out_buy_name"></td>
                     </tr>
                     <tr>
-                        <th>공급받는자</th>
-                        <td id="out_tx_buyer" class="left"></td>
+                        <th class="lbl">사업자번호</th>
+                        <td class="val" id="out_sup_biz"></td>
+                        <th class="lbl">사업자번호</th>
+                        <td class="val" id="out_buy_biz"></td>
+                    </tr>
+                    <tr>
+                        <th class="lbl">대표</th>
+                        <td class="val" id="out_sup_ceo"></td>
+                        <th class="lbl">대표</th>
+                        <td class="val" id="out_buy_ceo"></td>
+                    </tr>
+                    <tr>
+                        <th class="lbl">주소·연락처</th>
+                        <td class="val" id="out_sup_addr"></td>
+                        <th class="lbl">주소·연락처</th>
+                        <td class="val" id="out_buy_addr"></td>
                     </tr>
                 </table>
 
@@ -506,7 +573,7 @@
                 <div class="tx-sign">
                     <div id="out_tx_signDate">____년 __월 __일</div>
                     <div class="relative inline-block text-right mt-2 pr-10">
-                        <b>(주)플라이유니티 대표 김대현 &nbsp; (인)</b>
+                        <b><span id="out_tx_signName">(주)플라이유니티</span> 대표 <span id="out_tx_signCeo">김대현</span> &nbsp; (인)</b>
                         <div class="stamp-box" data-rep="fly" id="out_tx_stamp_box" style="right: -8px; top: 50%; transform: translateY(-50%); left: auto;">
                             <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200" class="stamp-img" alt="플라이유니티 직인" id="out_tx_stamp">
                         </div>
@@ -869,14 +936,29 @@
             updateTxDoc();
         }
 
+        function partyAddrLine(addrId, telId) {
+            const addr = (document.getElementById(addrId).value || '').trim();
+            const tel = (document.getElementById(telId).value || '').trim();
+            if (addr && tel) return `${addr} · ${tel}`;
+            return addr || tel || '';
+        }
+
         function updateTxDoc() {
             const issue = document.getElementById('tx_issueDate').value;
             const dateLabel = formatKorDate(issue);
             document.getElementById('out_tx_issueDate').innerText = dateLabel;
             document.getElementById('out_tx_signDate').innerText = dateLabel;
 
-            document.getElementById('out_tx_supplier').innerHTML = document.getElementById('tx_supplier').value.replace(/\n/g, '<br>');
-            document.getElementById('out_tx_buyer').innerHTML = document.getElementById('tx_buyer').value.replace(/\n/g, '<br>');
+            document.getElementById('out_sup_name').innerText = document.getElementById('tx_sup_name').value;
+            document.getElementById('out_sup_biz').innerText = document.getElementById('tx_sup_biz').value;
+            document.getElementById('out_sup_ceo').innerText = document.getElementById('tx_sup_ceo').value;
+            document.getElementById('out_sup_addr').innerText = partyAddrLine('tx_sup_addr', 'tx_sup_tel');
+            document.getElementById('out_buy_name').innerText = document.getElementById('tx_buy_name').value;
+            document.getElementById('out_buy_biz').innerText = document.getElementById('tx_buy_biz').value;
+            document.getElementById('out_buy_ceo').innerText = document.getElementById('tx_buy_ceo').value;
+            document.getElementById('out_buy_addr').innerText = partyAddrLine('tx_buy_addr', 'tx_buy_tel');
+            document.getElementById('out_tx_signName').innerText = document.getElementById('tx_sup_name').value || '(주)플라이유니티';
+            document.getElementById('out_tx_signCeo').innerText = document.getElementById('tx_sup_ceo').value || '김대현';
 
             let totalPax = 0;
             let totalAmt = 0;
@@ -935,8 +1017,20 @@
             return {
                 docType: 'tx',
                 issueDate: document.getElementById('tx_issueDate').value,
-                supplier: document.getElementById('tx_supplier').value,
-                buyer: document.getElementById('tx_buyer').value,
+                supplierParty: {
+                    name: document.getElementById('tx_sup_name').value,
+                    biz: document.getElementById('tx_sup_biz').value,
+                    ceo: document.getElementById('tx_sup_ceo').value,
+                    addr: document.getElementById('tx_sup_addr').value,
+                    tel: document.getElementById('tx_sup_tel').value
+                },
+                buyerParty: {
+                    name: document.getElementById('tx_buy_name').value,
+                    biz: document.getElementById('tx_buy_biz').value,
+                    ceo: document.getElementById('tx_buy_ceo').value,
+                    addr: document.getElementById('tx_buy_addr').value,
+                    tel: document.getElementById('tx_buy_tel').value
+                },
                 airline: document.getElementById('tx_airline').value,
                 fareBase: parseNum(document.getElementById('tx_fareBase').value),
                 fareFee: parseNum(document.getElementById('tx_fareFee').value),
@@ -946,10 +1040,19 @@
             };
         }
 
+        function setPartyFields(prefix, party) {
+            if (!party) return;
+            if (party.name !== undefined) document.getElementById(`tx_${prefix}_name`).value = party.name;
+            if (party.biz !== undefined) document.getElementById(`tx_${prefix}_biz`).value = party.biz;
+            if (party.ceo !== undefined) document.getElementById(`tx_${prefix}_ceo`).value = party.ceo;
+            if (party.addr !== undefined) document.getElementById(`tx_${prefix}_addr`).value = party.addr;
+            if (party.tel !== undefined) document.getElementById(`tx_${prefix}_tel`).value = party.tel;
+        }
+
         function applyTxData(data) {
             if (data.issueDate !== undefined) document.getElementById('tx_issueDate').value = data.issueDate;
-            if (data.supplier !== undefined) document.getElementById('tx_supplier').value = data.supplier;
-            if (data.buyer !== undefined) document.getElementById('tx_buyer').value = data.buyer;
+            if (data.supplierParty) setPartyFields('sup', data.supplierParty);
+            if (data.buyerParty) setPartyFields('buy', data.buyerParty);
             if (data.airline !== undefined) document.getElementById('tx_airline').value = data.airline;
             if (data.fareBase !== undefined) document.getElementById('tx_fareBase').value = data.fareBase;
             if (data.fareFee !== undefined) document.getElementById('tx_fareFee').value = data.fareFee;
