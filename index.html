@@ -229,95 +229,99 @@
         .pnr-text { font-family: 'Courier New', monospace; font-size: 8pt; line-height: 1.65; color: #334155; white-space: pre-wrap; word-break: break-all; }
 
         @media print {
-            @page { size: A4 portrait; margin: 0; }
+            @page { size: A4 portrait; margin: 12mm 15mm; }
             html, body {
                 background: #fff !important;
                 margin: 0 !important;
                 padding: 0 !important;
-                width: 210mm !important;
-                height: 297mm !important;
-                overflow: hidden !important;
-            }
-            #sidebar, #sidebar-tx, header, .print-hidden, .row-ctrl { display: none !important; }
-            /* 비활성 탭은 절대 인쇄되지 않음 (ID 강제 display보다 우선) */
-            #panel-fare.hidden,
-            #panel-fare.panel-hidden-print,
-            #panel-tx.hidden,
-            #panel-tx.panel-hidden-print {
-                display: none !important;
-                height: 0 !important;
-                overflow: hidden !important;
-                visibility: hidden !important;
-            }
-            #panel-fare:not(.hidden):not(.panel-hidden-print),
-            #panel-tx:not(.hidden):not(.panel-hidden-print) {
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 210mm !important;
-                height: 297mm !important;
+                width: auto !important;
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
                 display: block !important;
-                background: #fff !important;
-                overflow: hidden !important;
-                visibility: visible !important;
             }
-            #panel-tx:not(.hidden):not(.panel-hidden-print) main {
+            header, #sidebar, #sidebar-tx, .print-hidden, .row-ctrl {
+                display: none !important;
+            }
+
+            /* 현재 탭만 인쇄 — body[data-print] 기준 */
+            body[data-print="fare"] #panel-tx,
+            body[data-print="tx"] #panel-fare {
+                display: none !important;
+                visibility: hidden !important;
+                position: absolute !important;
+                left: -99999px !important;
+                height: 0 !important;
+                width: 0 !important;
+                overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            body[data-print="fare"] #panel-fare,
+            body[data-print="tx"] #panel-tx {
+                display: block !important;
+                visibility: visible !important;
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 background: #fff !important;
-                width: 210mm !important;
-                height: 297mm !important;
-                overflow: hidden !important;
+                overflow: visible !important;
+                box-shadow: none !important;
             }
+            body[data-print="fare"] #panel-fare main,
+            body[data-print="tx"] #panel-tx main {
+                display: block !important;
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                overflow: visible !important;
+            }
+
             .a4-page {
                 box-shadow: none !important;
                 margin: 0 !important;
-                padding: 12mm 15mm 14mm 15mm !important;
-                width: 210mm !important;
-                min-height: 297mm !important;
-                height: 297mm !important;
-                max-height: 297mm !important;
-                page-break-after: avoid !important;
-                page-break-inside: avoid !important;
-                overflow: hidden !important;
+                padding: 0 !important;
+                width: 100% !important;
+                min-height: 0 !important;
+                height: auto !important;
+                max-height: none !important;
+                overflow: visible !important;
                 background: #fff !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
             }
-            [contenteditable="true"] { box-shadow: none !important; background-color: transparent !important; padding: 0 !important; }
+            [contenteditable="true"] {
+                box-shadow: none !important;
+                background-color: transparent !important;
+                padding: 0 !important;
+            }
 
-            /* 플라이 거래명세서: 배경색 없이 선·글씨만, A4 1장 */
+            /* 플라이 거래명세서: 배경색 없이 선·글씨만 */
             #tx-a4 {
                 border-top: 2.5px solid #111 !important;
                 background: #fff !important;
-                display: flex !important;
-                flex-direction: column !important;
-                box-sizing: border-box !important;
+                min-height: 0 !important;
+                height: auto !important;
             }
             #tx-a4 * {
                 -webkit-print-color-adjust: economy !important;
                 print-color-adjust: economy !important;
                 box-shadow: none !important;
             }
-            #tx-a4 .tx-brandbar {
-                border-bottom-color: #111 !important;
-                margin-bottom: 10px !important;
-                padding-bottom: 8px !important;
-            }
+            #tx-a4 .tx-brandbar { border-bottom-color: #111 !important; }
             #tx-a4 .tx-title-box {
                 background: #fff !important;
                 border-color: #111 !important;
-                margin: 4px 0 10px !important;
             }
             #tx-a4 .tx-title { color: #111 !important; }
             #tx-a4 .tx-title-en { color: #444 !important; }
-            #tx-a4 .tx-table {
-                border-color: #111 !important;
-                background: #fff !important;
-            }
+            #tx-a4 .tx-table { border-color: #111 !important; background: #fff !important; }
             #tx-a4 .tx-table th,
-            #tx-a4 .tx-table td {
-                background: #fff !important;
-                color: #111 !important;
-                border-color: #333 !important;
-            }
+            #tx-a4 .tx-table td,
             #tx-a4 .tx-table thead th,
             #tx-a4 .tx-party .role,
             #tx-a4 .tx-party .lbl,
@@ -326,23 +330,14 @@
                 color: #111 !important;
                 border-color: #333 !important;
             }
-            #tx-a4 .tx-party .role { font-weight: 900 !important; }
             #tx-a4 .tx-confirm {
                 background: #fff !important;
                 border: 1px solid #333 !important;
                 border-left: 3px solid #111 !important;
                 color: #111 !important;
-                margin-top: 12px !important;
             }
-            #tx-a4 .tx-sign {
-                margin-top: auto !important;
-                border-top-color: #666 !important;
-                color: #111 !important;
-            }
-            #tx-a4 .tx-footer-note {
-                margin-top: 10px !important;
-                color: #444 !important;
-            }
+            #tx-a4 .tx-sign { border-top-color: #666 !important; color: #111 !important; }
+            #tx-a4 .tx-footer-note { color: #444 !important; }
         }
     </style>
 </head>
@@ -820,9 +815,17 @@
                 alert('이 앱에서는 인쇄가 어려워요.\n다른 브라우저나 PC에서 열어 주세요.');
                 return;
             }
-            // 현재 탭만 인쇄되도록 클래스 재확인
-            switchDoc(currentDoc || 'fare');
+            const doc = currentDoc || 'fare';
+            switchDoc(doc);
+            document.body.setAttribute('data-print', doc);
+            const cleanup = () => {
+                document.body.removeAttribute('data-print');
+                window.removeEventListener('afterprint', cleanup);
+            };
+            window.addEventListener('afterprint', cleanup);
             window.print();
+            // afterprint 미지원 브라우저 대비
+            setTimeout(cleanup, 1000);
         }
 
         function isTxLinkOn() {
@@ -907,6 +910,7 @@
             document.getElementById('panel-tx').classList.toggle('hidden', isFare);
             document.getElementById('panel-fare').classList.toggle('panel-hidden-print', !isFare);
             document.getElementById('panel-tx').classList.toggle('panel-hidden-print', isFare);
+            document.body.setAttribute('data-print', type);
 
             const tabFare = document.getElementById('tab-fare');
             const tabTx = document.getElementById('tab-tx');
