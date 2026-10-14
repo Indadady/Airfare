@@ -92,7 +92,12 @@
         }
         .stamp-box[data-rep="lee"] .stamp-img { transform: scale(1.0); }
         .stamp-box[data-rep="heo"] .stamp-img { transform: scale(2.4) translateY(2px); }
-        .stamp-box[data-rep="fly"] .stamp-img { transform: scale(1.15); }
+        .stamp-box[data-rep="fly"] .stamp-img { transform: scale(1.05); }
+        #tx-a4 .stamp-box {
+            overflow: visible;
+            width: 72px;
+            height: 72px;
+        }
 
         /* 자동계산 및 정보 테이블 스타일 */
         .info-table { width: 100%; border-collapse: collapse; font-size: 9.5pt; text-align: left; margin-bottom: 0; border-top: 2px solid #1e293b;}
@@ -111,6 +116,7 @@
             flex-direction: column;
             min-height: 297mm;
             box-sizing: border-box;
+            overflow: visible;
         }
         .tx-brandbar {
             display: flex;
@@ -195,12 +201,13 @@
             color: #334155;
         }
         .tx-sign {
-            margin-top: auto;
+            margin-top: 28px;
             text-align: right;
             line-height: 1.9;
             position: relative;
-            padding-top: 16px;
+            padding: 16px 28px 8px 0;
             border-top: 1px dashed #94a3b8;
+            overflow: visible;
         }
         .tx-sign .issuer-label {
             font-size: 11px;
@@ -208,8 +215,17 @@
             letter-spacing: 0.06em;
         }
         .tx-sign b { font-size: 15px; color: #0f172a; }
+        .tx-sign-name {
+            position: relative;
+            display: inline-block;
+            text-align: right;
+            margin-top: 4px;
+            padding-right: 40px;
+            overflow: visible;
+        }
         .tx-footer-note {
-            margin-top: 18px;
+            margin-top: 20px;
+            margin-bottom: 4px;
             font-size: 10px;
             color: #64748b;
             text-align: center;
@@ -336,7 +352,15 @@
                 border-left: 3px solid #111 !important;
                 color: #111 !important;
             }
-            #tx-a4 .tx-sign { border-top-color: #666 !important; color: #111 !important; }
+            #tx-a4 .tx-sign {
+                margin-top: 24px !important;
+                border-top-color: #666 !important;
+                color: #111 !important;
+                overflow: visible !important;
+                padding-right: 24px !important;
+            }
+            #tx-a4 .tx-sign-name { overflow: visible !important; }
+            #tx-a4 .stamp-box { overflow: visible !important; }
             #tx-a4 .tx-footer-note { color: #444 !important; }
         }
     </style>
@@ -780,9 +804,9 @@
                 <div class="tx-sign">
                     <div class="issuer-label">위 내용을 확인함</div>
                     <div id="out_tx_signDate">____년 __월 __일</div>
-                    <div class="relative inline-block text-right mt-1 pr-10">
+                    <div class="tx-sign-name">
                         <b><span id="out_tx_signName">(주)플라이유니티</span> 대표 <span id="out_tx_signCeo">김대현</span> &nbsp; (인)</b>
-                        <div class="stamp-box" data-rep="fly" id="out_tx_stamp_box" style="right: -8px; top: 50%; transform: translateY(-50%); left: auto;">
+                        <div class="stamp-box" data-rep="fly" id="out_tx_stamp_box" style="left: calc(100% - 20px); top: 45%; transform: translate(-50%, -50%);">
                             <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200" class="stamp-img" alt="플라이유니티 직인" id="out_tx_stamp">
                         </div>
                     </div>
