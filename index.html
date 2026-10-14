@@ -190,12 +190,13 @@
             border-left: 4px solid #003478;
             color: #334155;
         }
+        #tx-a4 { display: flex; flex-direction: column; min-height: 297mm; box-sizing: border-box; }
         .tx-sign {
-            margin-top: 28px;
+            margin-top: auto;
             text-align: right;
             line-height: 1.9;
             position: relative;
-            padding-top: 12px;
+            padding-top: 16px;
             border-top: 1px dashed #94a3b8;
         }
         .tx-sign .issuer-label {
@@ -225,15 +226,109 @@
         .pnr-text { font-family: 'Courier New', monospace; font-size: 8pt; line-height: 1.65; color: #334155; white-space: pre-wrap; word-break: break-all; }
 
         @media print {
-            @page { size: A4 portrait; margin: 0; } 
-            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-            body { background-color: white !important; margin: 0; }
+            @page { size: A4 portrait; margin: 0; }
+            html, body {
+                background: #fff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                overflow: hidden !important;
+            }
             #sidebar, #sidebar-tx, header, .print-hidden, .row-ctrl { display: none !important; }
-            #panel-fare, #panel-tx { margin: 0 !important; padding: 0 !important; width: 100% !important; display: block !important; }
+            #panel-fare, #panel-tx {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                display: block !important;
+                background: #fff !important;
+                overflow: hidden !important;
+            }
+            #panel-tx main {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: #fff !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                overflow: hidden !important;
+            }
             .panel-hidden-print, .hidden { display: none !important; }
-            .a4-page { box-shadow: none; margin: 0; padding: 12mm 15mm 15mm 15mm; width: 210mm; min-height: 297mm; height: auto; page-break-after: always; overflow: hidden; }
-            .a4-page:last-child { page-break-after: auto; }
-            [contenteditable="true"] { box-shadow: none !important; background-color: transparent !important; padding: 0 !important;}
+            .a4-page {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 12mm 15mm 14mm 15mm !important;
+                width: 210mm !important;
+                min-height: 297mm !important;
+                height: 297mm !important;
+                max-height: 297mm !important;
+                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
+                overflow: hidden !important;
+                background: #fff !important;
+            }
+            [contenteditable="true"] { box-shadow: none !important; background-color: transparent !important; padding: 0 !important; }
+
+            /* 플라이 거래명세서: 배경색 없이 선·글씨만, A4 1장 */
+            #tx-a4 {
+                border-top: 2.5px solid #111 !important;
+                background: #fff !important;
+                display: flex !important;
+                flex-direction: column !important;
+                box-sizing: border-box !important;
+            }
+            #tx-a4 * {
+                -webkit-print-color-adjust: economy !important;
+                print-color-adjust: economy !important;
+                box-shadow: none !important;
+            }
+            #tx-a4 .tx-brandbar {
+                border-bottom-color: #111 !important;
+                margin-bottom: 10px !important;
+                padding-bottom: 8px !important;
+            }
+            #tx-a4 .tx-title-box {
+                background: #fff !important;
+                border-color: #111 !important;
+                margin: 4px 0 10px !important;
+            }
+            #tx-a4 .tx-title { color: #111 !important; }
+            #tx-a4 .tx-title-en { color: #444 !important; }
+            #tx-a4 .tx-table {
+                border-color: #111 !important;
+                background: #fff !important;
+            }
+            #tx-a4 .tx-table th,
+            #tx-a4 .tx-table td {
+                background: #fff !important;
+                color: #111 !important;
+                border-color: #333 !important;
+            }
+            #tx-a4 .tx-table thead th,
+            #tx-a4 .tx-party .role,
+            #tx-a4 .tx-party .lbl,
+            #tx-a4 .tx-table tr.total td {
+                background: #fff !important;
+                color: #111 !important;
+                border-color: #333 !important;
+            }
+            #tx-a4 .tx-party .role { font-weight: 900 !important; }
+            #tx-a4 .tx-confirm {
+                background: #fff !important;
+                border: 1px solid #333 !important;
+                border-left: 3px solid #111 !important;
+                color: #111 !important;
+                margin-top: 12px !important;
+            }
+            #tx-a4 .tx-sign {
+                margin-top: auto !important;
+                border-top-color: #666 !important;
+                color: #111 !important;
+            }
+            #tx-a4 .tx-footer-note {
+                margin-top: 10px !important;
+                color: #444 !important;
+            }
         }
     </style>
 </head>
