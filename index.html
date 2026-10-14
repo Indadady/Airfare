@@ -1051,6 +1051,8 @@
 
                     updateDoc();
                     calcFareTable();
+                    fareTouched = true;
+                    if (isTxLinkOn()) syncFareToTx(false);
                     alert(`✅ [${data.receiver || '지정 안됨'}] 템플릿을 성공적으로 불러왔습니다.`);
                 } catch (error) {
                     alert('🚨 템플릿 파일을 읽는 중 오류가 발생했습니다. 투어메이커 시스템에서 다운로드한 JSON 파일인지 확인해주세요.');
