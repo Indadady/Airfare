@@ -561,7 +561,7 @@
                     </div>
                     <div>
                         <label class="block text-[10px] font-bold text-slate-600 mb-0.5">연락처</label>
-                        <input type="text" id="tx_buy_tel" value="" placeholder="선택 입력" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
+                        <input type="text" id="tx_buy_tel" value="033-562-2551" placeholder="선택 입력" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
                     </div>
                 </div>
             </div>
@@ -1132,8 +1132,8 @@
         function partyAddrLine(addrId, telId) {
             const addr = (document.getElementById(addrId).value || '').trim();
             const tel = (document.getElementById(telId).value || '').trim();
-            if (addr && tel) return `${addr} · ${tel}`;
-            return addr || tel || '';
+            if (addr && tel) return `${escHtml(addr)}<br>${escHtml(tel)}`;
+            return escHtml(addr || tel || '');
         }
 
         function updateTxDoc() {
@@ -1145,11 +1145,11 @@
             document.getElementById('out_sup_name').innerText = document.getElementById('tx_sup_name').value;
             document.getElementById('out_sup_biz').innerText = document.getElementById('tx_sup_biz').value;
             document.getElementById('out_sup_ceo').innerText = document.getElementById('tx_sup_ceo').value;
-            document.getElementById('out_sup_addr').innerText = partyAddrLine('tx_sup_addr', 'tx_sup_tel');
+            document.getElementById('out_sup_addr').innerHTML = partyAddrLine('tx_sup_addr', 'tx_sup_tel');
             document.getElementById('out_buy_name').innerText = document.getElementById('tx_buy_name').value;
             document.getElementById('out_buy_biz').innerText = document.getElementById('tx_buy_biz').value;
             document.getElementById('out_buy_ceo').innerText = document.getElementById('tx_buy_ceo').value;
-            document.getElementById('out_buy_addr').innerText = partyAddrLine('tx_buy_addr', 'tx_buy_tel');
+            document.getElementById('out_buy_addr').innerHTML = partyAddrLine('tx_buy_addr', 'tx_buy_tel');
             document.getElementById('out_tx_signName').innerText = document.getElementById('tx_sup_name').value || '(주)플라이유니티';
             document.getElementById('out_tx_signCeo').innerText = document.getElementById('tx_sup_ceo').value || '김대현';
 
