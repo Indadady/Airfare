@@ -103,24 +103,128 @@
         .calc-table th { padding: 8px 6px; border: 1px solid #cbd5e1; font-weight: bold; background-color: #f8fafc; color: #334155; line-height: 1.4; }
         .calc-table td { padding: 8px 6px; border: 1px solid #cbd5e1; line-height: 1.55; }
 
-        /* 플라이유니티 거래명세서 */
-        .tx-title { text-align: center; font-size: 22px; color: #004098; margin: 0 0 4px; font-weight: 900; }
-        .tx-sub { text-align: center; color: #666; font-size: 12px; margin-bottom: 18px; }
-        .tx-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        .tx-table th, .tx-table td { border: 1px solid #999; padding: 8px 10px; text-align: center; }
-        .tx-table th { background: #f2f6fb; color: #004098; font-weight: 700; }
+        /* 플라이유니티 거래명세서 — 발권처 상용문서 톤 (투어메이커 증명서와 분리) */
+        #tx-a4 {
+            border-top: 6px solid #003478;
+            color: #1f2937;
+        }
+        .tx-brandbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-bottom: 10px;
+            margin-bottom: 14px;
+            border-bottom: 2px solid #003478;
+        }
+        .tx-brandbar .tx-logo { height: 58px; width: auto; max-width: 240px; object-fit: contain; }
+        .tx-brand-meta {
+            text-align: right;
+            font-size: 11px;
+            line-height: 1.55;
+            color: #334155;
+        }
+        .tx-brand-meta .co {
+            display: block;
+            font-size: 13px;
+            font-weight: 900;
+            color: #003478;
+            letter-spacing: -0.02em;
+        }
+        .tx-title-box {
+            text-align: center;
+            margin: 6px 0 14px;
+            padding: 10px 12px 8px;
+            border: 2px solid #003478;
+            background: linear-gradient(180deg, #f0f6fc 0%, #fff 70%);
+        }
+        .tx-title {
+            margin: 0;
+            font-size: 22px;
+            font-weight: 900;
+            color: #003478;
+            letter-spacing: 0.35em;
+            text-indent: 0.35em;
+        }
+        .tx-title-en {
+            margin-top: 2px;
+            font-size: 10px;
+            font-weight: 700;
+            color: #64748b;
+            letter-spacing: 0.12em;
+        }
+        .tx-sub {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: #475569;
+        }
+        .tx-sub b { color: #0f172a; }
+        .tx-table { width: 100%; border-collapse: collapse; font-size: 12px; border: 1.5px solid #003478; }
+        .tx-table th, .tx-table td { border: 1px solid #94a3b8; padding: 7px 8px; text-align: center; }
+        .tx-table thead th {
+            background: #003478;
+            color: #fff;
+            font-weight: 700;
+            border-color: #002a60;
+            font-size: 11.5px;
+            line-height: 1.35;
+        }
         .tx-table td.left { text-align: left; }
-        .tx-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
-        .tx-table tr.total td { background: #f7f7f7; font-weight: bold; }
-        .tx-party { table-layout: fixed; }
-        .tx-party .role { width: 11%; background: #f2f6fb; color: #004098; font-weight: 700; writing-mode: horizontal-tb; vertical-align: middle; }
-        .tx-party .lbl { width: 12%; background: #f8fafc; color: #475569; font-weight: 600; font-size: 11px; white-space: nowrap; }
-        .tx-party .val { text-align: left; font-size: 12px; line-height: 1.45; word-break: keep-all; }
-        .tx-party .val.strong { font-weight: 700; color: #0f172a; }
-        .tx-confirm { margin-top: 18px; line-height: 1.8; font-size: 13px; }
-        .tx-sign { margin-top: 32px; text-align: right; line-height: 2; position: relative; }
-        .tx-sign b { font-size: 15px; }
-        .tx-logo { height: 58px; width: auto; max-width: 240px; object-fit: contain; }
+        .tx-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-family: Consolas, 'Courier New', monospace; }
+        .tx-table tr.total td { background: #eef4fb; font-weight: bold; color: #003478; border-top: 1.5px solid #003478; }
+        .tx-party { table-layout: fixed; margin-bottom: 0; }
+        .tx-party .role {
+            background: #003478;
+            color: #fff;
+            font-weight: 800;
+            font-size: 12px;
+            vertical-align: middle;
+            border-color: #002a60 !important;
+            letter-spacing: 0.08em;
+        }
+        .tx-party .lbl {
+            background: #e8f0f8;
+            color: #003478;
+            font-weight: 700;
+            font-size: 11px;
+            white-space: nowrap;
+        }
+        .tx-party .val { text-align: left; font-size: 12px; line-height: 1.45; word-break: keep-all; background: #fff; }
+        .tx-party .val.strong { font-weight: 800; color: #0f172a; }
+        .tx-confirm {
+            margin-top: 16px;
+            padding: 12px 14px;
+            line-height: 1.85;
+            font-size: 12.5px;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-left: 4px solid #003478;
+            color: #334155;
+        }
+        .tx-sign {
+            margin-top: 28px;
+            text-align: right;
+            line-height: 1.9;
+            position: relative;
+            padding-top: 12px;
+            border-top: 1px dashed #94a3b8;
+        }
+        .tx-sign .issuer-label {
+            font-size: 11px;
+            color: #64748b;
+            letter-spacing: 0.06em;
+        }
+        .tx-sign b { font-size: 15px; color: #0f172a; }
+        .tx-footer-note {
+            margin-top: 18px;
+            font-size: 10px;
+            color: #64748b;
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
         
         /* 에디터 UI 요소 */
         [contenteditable="true"] { outline: none; padding: 2px 4px; transition: background 0.2s; min-height: 1em; border-radius: 2px; }
@@ -508,15 +612,26 @@
             </div>
         </aside>
 
-        <main class="flex-1 bg-[#dbe7f5] p-4 md:p-8 overflow-y-auto flex justify-center">
+        <main class="flex-1 bg-[#c5d4e8] p-4 md:p-8 overflow-y-auto flex justify-center">
             <div class="a4-page" id="tx-a4">
-                <div class="flex justify-between items-center mb-4 shrink-0">
+                <div class="tx-brandbar shrink-0">
                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="tx-logo">
-                    <span class="text-[10px] text-slate-500 font-roboto">Ticket Agent Statement</span>
+                    <div class="tx-brand-meta">
+                        <span class="co">(주)플라이유니티</span>
+                        사업자 629-88-02559<br>
+                        강릉시 경강로 2141 · 070-4888-5077
+                    </div>
                 </div>
 
-                <h1 class="tx-title">항공권 거래명세서</h1>
-                <div class="tx-sub">발행일 : <span id="out_tx_issueDate">____년 __월 __일</span></div>
+                <div class="tx-title-box shrink-0">
+                    <h1 class="tx-title">항 공 권 거 래 명 세 서</h1>
+                    <div class="tx-title-en">AIR TICKET TRANSACTION STATEMENT</div>
+                </div>
+
+                <div class="tx-sub shrink-0">
+                    <span>문서구분 : <b>발권처 거래명세</b></span>
+                    <span>발행일 : <b id="out_tx_issueDate">____년 __월 __일</b></span>
+                </div>
 
                 <table class="tx-table tx-party">
                     <colgroup>
@@ -571,14 +686,17 @@
                 <div class="tx-confirm" id="out_tx_confirm"></div>
 
                 <div class="tx-sign">
+                    <div class="issuer-label">위 내용을 확인함</div>
                     <div id="out_tx_signDate">____년 __월 __일</div>
-                    <div class="relative inline-block text-right mt-2 pr-10">
+                    <div class="relative inline-block text-right mt-1 pr-10">
                         <b><span id="out_tx_signName">(주)플라이유니티</span> 대표 <span id="out_tx_signCeo">김대현</span> &nbsp; (인)</b>
                         <div class="stamp-box" data-rep="fly" id="out_tx_stamp_box" style="right: -8px; top: 50%; transform: translateY(-50%); left: auto;">
                             <img src="https://blogger.googleusercontent.com/img/a/AVvXsEg5NROwOPTwZwGXJqq88AYAG3-YDmzxbboxS585p4a3NUcTbqVm7NPa1xjCPybjXY9pKlGZAS3PPXLsTGuCatiLE743o12OMTDB4RggSlEBJi4CsqnDXrgB1BAuwbtGshxmNGkbXdH5tQK8Z214rkGzHFbjr-qBA8qGIUAE5CPPxB0NWJkiIXqP9sVwsYY=w200-h200" class="stamp-img" alt="플라이유니티 직인" id="out_tx_stamp">
                         </div>
                     </div>
                 </div>
+
+                <div class="tx-footer-note">본 명세서는 발권처 (주)플라이유니티가 발행한 항공권 거래 증빙입니다.</div>
             </div>
         </main>
     </div>
