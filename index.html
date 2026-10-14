@@ -111,26 +111,12 @@
         .tx-brandbar {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 12px;
+            justify-content: flex-start;
             padding-bottom: 10px;
             margin-bottom: 14px;
             border-bottom: 2px solid #003478;
         }
         .tx-brandbar .tx-logo { height: 58px; width: auto; max-width: 240px; object-fit: contain; }
-        .tx-brand-meta {
-            text-align: right;
-            font-size: 11px;
-            line-height: 1.55;
-            color: #334155;
-        }
-        .tx-brand-meta .co {
-            display: block;
-            font-size: 13px;
-            font-weight: 900;
-            color: #003478;
-            letter-spacing: -0.02em;
-        }
         .tx-title-box {
             text-align: center;
             margin: 6px 0 14px;
@@ -360,7 +346,7 @@
             <div class="bg-indigo-50 p-4 rounded-lg border border-indigo-100 mt-4 mb-10">
                 <h3 class="font-bold text-indigo-800 text-xs mb-2"><i class="fa-solid fa-circle-info"></i> 사용 팁 (운임표 작성)</h3>
                 <p class="text-[11px] text-indigo-700 leading-relaxed">우측 A4 용지 미리보기 영역의 <b>[운임 정보 (Fare Information)] 표</b> 안쪽을 클릭하시면 엑셀처럼 <b>직접 글씨와 숫자를 수정</b>할 수 있습니다. 단가와 수량을 입력하면 총액이 자동 계산됩니다.</p>
-                <p class="text-[11px] text-indigo-700 leading-relaxed mt-2">군청·공공기관 제출 시 <b>1인 금액</b> 근거가 필요하면 상단의 <b>플라이유니티 거래명세서</b> 탭에서 발권처 명세서를 함께 작성해 제출하세요.</p>
+                <p class="text-[11px] text-indigo-700 leading-relaxed mt-2">여기 팀 자료를 수정하면 <b>플라이유니티 거래명세서</b>에 자동 반영됩니다. 군청 제출 시 두 문서를 함께 쓰세요.</p>
             </div>
         </aside>
 
@@ -497,7 +483,14 @@
 
             <div class="bg-sky-50 border border-sky-200 p-4 rounded-xl">
                 <h2 class="text-sm font-bold text-sky-900 mb-2"><i class="fa-solid fa-building mr-1"></i> 발권처 거래명세서</h2>
-                <p class="text-[11px] text-sky-800 leading-relaxed">계약여행사 운임증명서의 1인 금액을 보완할 때, 실제 발권처 <b>(주)플라이유니티</b> 명의 거래명세서를 작성해 함께 제출하세요. 정선군청 양식을 기본 샘플로 넣었습니다.</p>
+                <p class="text-[11px] text-sky-800 leading-relaxed">기본값은 <b>정선군청 1·2차</b> 샘플입니다. 투어메이커 운임증명서에 새 팀 자료를 입력하면 아래 연동으로 발행일·PNR·노선·인원·1인 금액이 반영됩니다.</p>
+                <label class="flex items-center gap-2 mt-3 cursor-pointer bg-white border border-sky-200 rounded-lg p-2.5">
+                    <input type="checkbox" id="tx_link_fare" class="w-4 h-4 accent-sky-700" checked onchange="onTxLinkToggle()">
+                    <span class="text-xs font-bold text-sky-900">운임증명서와 자동 연동</span>
+                </label>
+                <button type="button" onclick="syncFareToTx(true)" class="mt-2 w-full py-2 bg-[#003478] text-white text-xs font-bold rounded-lg hover:bg-[#002a60] transition">
+                    <i class="fa-solid fa-link mr-1"></i> 지금 운임증명서 내용 반영
+                </button>
             </div>
 
             <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-sm">
@@ -608,7 +601,7 @@
             </div>
 
             <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 mb-8 text-[11px] text-amber-900 leading-relaxed">
-                ※ 발행 전 플라이유니티 확인·직인 날인 후 제출하세요. 팀마다 차수·PNR·인원·현금영수증만 바꿔 재사용하면 됩니다.
+                ※ 자동 연동 시 차수 행은 운임증명서 기준으로 다시 맞춰집니다. 2차 이상이면 반영 후 차수를 추가하고, 현금영수증 번호는 직접 입력하세요. 발행 전 플라이유니티 확인·직인 후 제출하세요.
             </div>
         </aside>
 
@@ -616,11 +609,6 @@
             <div class="a4-page" id="tx-a4">
                 <div class="tx-brandbar shrink-0">
                     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhDlxjbueW0SvPAcv2A63S2A29MmX556P9-k4UAkVbMJ1xFNP_Hh2xcKk_G1JdNRdYoNe23sxVS7Xg7KX-AVvQ9lMg2SlseZ-7hIAP6xnnXEPFIQ5-Vf6udjQ1nj6QvTi-IDe9W-cxvlQfVoZ7lxXvWw5KNDEhdic3Cewf7qMdAzH8u46QTKLmPLRseN5M=s16000" alt="FLY UNITY" class="tx-logo">
-                    <div class="tx-brand-meta">
-                        <span class="co">(주)플라이유니티</span>
-                        사업자 629-88-02559<br>
-                        강릉시 경강로 2141 · 070-4888-5077
-                    </div>
                 </div>
 
                 <div class="tx-title-box shrink-0">
@@ -708,7 +696,10 @@
         let currentDoc = 'fare';
         let currentRep = 'lee';
         let txRows = [];
+        let fareTouched = false;
+        let syncingFromFare = false;
 
+        // 기본값: 정선군청 발권 자료 (1·2차)
         const DEFAULT_TX_ROWS = [
             { label: '1차', pnr: 'Q8AE2A', route: '청주-삿포로 왕복\n10/20 ~ 10/23', pax: 14, unit: 535400, receipt: '448511804' },
             { label: '2차', pnr: 'A2236Q', route: '청주-삿포로 왕복\n10/27 ~ 10/30', pax: 15, unit: 535400, receipt: '448511788' }
@@ -721,6 +712,81 @@
                 return;
             }
             window.print();
+        }
+
+        function isTxLinkOn() {
+            const el = document.getElementById('tx_link_fare');
+            return !el || el.checked;
+        }
+
+        function markFareTouched() {
+            if (syncingFromFare) return;
+            fareTouched = true;
+            if (isTxLinkOn()) syncFareToTx(false);
+        }
+
+        function onTxLinkToggle() {
+            if (isTxLinkOn() && fareTouched) syncFareToTx(false);
+        }
+
+        function collectFareSnapshot() {
+            let base = 0;
+            let fee = 0;
+            let qty = 0;
+            document.querySelectorAll('#tbody-fare tr.fare-row').forEach(row => {
+                const cols = row.querySelectorAll('td[contenteditable="true"]');
+                if (!cols.length) return;
+                const desc = (cols[1]?.innerText || '').trim();
+                const price = parseNum(cols[2]?.innerText);
+                const q = parseNum(cols[3]?.innerText);
+                if (/수수료|fee/i.test(desc)) fee += price;
+                else base += price;
+                if (q > qty) qty = q;
+            });
+
+            const pnr = (document.getElementById('in_pnr').value || '').trim();
+            const routing = (document.getElementById('in_routing').value || '').trim();
+            const depDate = document.getElementById('in_depDate').value;
+            let route = routing;
+            if (depDate) {
+                const parts = String(depDate).split('-');
+                if (parts.length === 3) route = `${routing}\n${Number(parts[1])}/${Number(parts[2])} 출발`;
+            }
+
+            return {
+                issueDate: document.getElementById('in_issueDate').value,
+                pnr,
+                route,
+                pax: qty || 1,
+                unit: base + fee,
+                base,
+                fee
+            };
+        }
+
+        function syncFareToTx(showAlert) {
+            const snap = collectFareSnapshot();
+            syncingFromFare = true;
+            try {
+                if (snap.issueDate) document.getElementById('tx_issueDate').value = snap.issueDate;
+                document.getElementById('tx_fareBase').value = snap.base;
+                document.getElementById('tx_fareFee').value = snap.fee;
+
+                const prevReceipts = txRows.map(r => r.receipt);
+                txRows = [{
+                    label: '1차',
+                    pnr: snap.pnr,
+                    route: snap.route,
+                    pax: snap.pax,
+                    unit: snap.unit,
+                    receipt: prevReceipts[0] || ''
+                }];
+                renderTxInputs();
+                updateTxDoc();
+            } finally {
+                syncingFromFare = false;
+            }
+            if (showAlert) alert('운임증명서 내용을 플라이유니티 거래명세서에 반영했습니다.\n(현금영수증·2차 이상은 필요 시 직접 보완하세요)');
         }
 
         function switchDoc(type) {
@@ -736,6 +802,8 @@
             tabFare.classList.toggle('active', isFare);
             tabTx.classList.toggle('active', !isFare);
             tabTx.classList.toggle('fly', true);
+
+            if (!isFare && fareTouched && isTxLinkOn()) syncFareToTx(false);
         }
 
         // --- 1. 대표자(직인) 설정 ---
@@ -765,6 +833,7 @@
 
         // --- 2. 기본 정보 데이터 바인딩 ---
         function updateDoc(evt) {
+            if (evt && evt.isTrusted) markFareTouched();
             document.querySelector('.out_receiver').innerText = document.getElementById('in_receiver').value;
             document.querySelector('.out_paxName').innerText = document.getElementById('in_paxName').value;
             document.querySelector('.out_pnr').innerText = document.getElementById('in_pnr').value;
@@ -869,6 +938,7 @@
                 let val = parseNum(e.target.innerText);
                 e.target.innerText = val > 0 ? formatNum(val) : '';
                 calcFareTable();
+                markFareTouched();
             }
         }, true);
 
@@ -876,7 +946,10 @@
             if(e.target.dataset.syncRouting === 'true') {
                 e.target.dataset.userEdited = 'true';
             }
-            if(e.target.hasAttribute('contenteditable')) calcFareTable();
+            if(e.target.hasAttribute('contenteditable')) {
+                calcFareTable();
+                markFareTouched();
+            }
         });
 
         document.addEventListener('paste', function(e) {
