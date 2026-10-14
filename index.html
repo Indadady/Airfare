@@ -607,129 +607,48 @@
     <!-- ========== PANEL: 플라이유니티 거래명세서 ========== -->
     <div class="flex flex-1 overflow-hidden h-full flex-col md:flex-row hidden" id="panel-tx">
 
-        <aside id="sidebar-tx" class="w-full md:w-80 lg:w-[420px] bg-white border-r border-slate-200 p-6 overflow-y-auto flex flex-col gap-5 shadow-[10px_0_15px_-3px_rgba(0,0,0,0.05)] z-10 shrink-0 print-hidden">
+        <aside id="sidebar-tx" class="w-full md:w-72 bg-white border-r border-slate-200 p-4 overflow-y-auto flex flex-col gap-4 shadow-[10px_0_15px_-3px_rgba(0,0,0,0.05)] z-10 shrink-0 print-hidden">
 
-            <div class="bg-sky-50 border border-sky-200 p-4 rounded-xl">
-                <h2 class="text-sm font-bold text-sky-900 mb-2"><i class="fa-solid fa-building mr-1"></i> 발권처 거래명세서</h2>
-                <p class="text-[11px] text-sky-800 leading-relaxed">기본값은 <b>정선군청 1·2차</b> 샘플입니다. 투어메이커 운임증명서에 새 팀 자료를 입력하면 아래 연동으로 발행일·PNR·노선·인원·1인 금액이 반영됩니다.</p>
-                <label class="flex items-center gap-2 mt-3 cursor-pointer bg-white border border-sky-200 rounded-lg p-2.5">
-                    <input type="checkbox" id="tx_link_fare" class="w-4 h-4 accent-sky-700" checked onchange="onTxLinkToggle()">
-                    <span class="text-xs font-bold text-sky-900">운임증명서와 자동 연동</span>
-                </label>
-                <button type="button" onclick="syncFareToTx(true)" class="mt-2 w-full py-2 bg-[#003478] text-white text-xs font-bold rounded-lg hover:bg-[#002a60] transition">
-                    <i class="fa-solid fa-link mr-1"></i> 지금 운임증명서 내용 반영
+            <div class="bg-sky-50 border border-sky-200 p-3 rounded-xl">
+                <h2 class="text-sm font-bold text-sky-900 mb-1"><i class="fa-solid fa-building mr-1"></i> 플라이유니티 거래명세서</h2>
+                <p class="text-[11px] text-sky-800 leading-relaxed">오른쪽 <b>A4 표·칸을 직접 클릭</b>해 수정하세요. (가격산출내역서와 같은 방식)</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">발행일</label>
+                <input type="date" id="tx_issueDate" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" onchange="onTxIssueDateChange()">
+            </div>
+
+            <div class="flex gap-2">
+                <button type="button" onclick="addTxRow()" class="flex-1 py-2 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-lg border border-emerald-300 hover:bg-emerald-200">
+                    <i class="fa-solid fa-plus mr-1"></i>차수 추가
                 </button>
             </div>
 
-            <div class="bg-slate-50 border border-slate-200 p-4 rounded-xl shadow-sm">
-                <h2 class="text-sm font-bold text-slate-800 mb-3"><i class="fa-solid fa-database mr-1"></i> 데이터 저장 / 불러오기</h2>
+            <label class="flex items-center gap-2 cursor-pointer bg-white border border-sky-200 rounded-lg p-2.5">
+                <input type="checkbox" id="tx_link_fare" class="w-4 h-4 accent-sky-700" checked onchange="onTxLinkToggle()">
+                <span class="text-xs font-bold text-sky-900">운임증명서 자동 연동</span>
+            </label>
+            <button type="button" onclick="syncFareToTx(true)" class="w-full py-2 bg-[#003478] text-white text-xs font-bold rounded-lg hover:bg-[#002a60] transition">
+                <i class="fa-solid fa-link mr-1"></i> 운임증명서 내용 반영
+            </button>
+
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                <h2 class="text-xs font-bold text-slate-800 mb-2"><i class="fa-solid fa-database mr-1"></i> 저장 / 불러오기</h2>
                 <div class="flex gap-2">
-                    <button onclick="saveTxTemplate()" class="flex-1 bg-white text-emerald-700 font-bold py-2.5 px-2 rounded-lg border border-emerald-300 hover:bg-emerald-50 transition text-xs flex justify-center items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-download"></i> 저장
-                    </button>
-                    <button onclick="document.getElementById('file-upload-tx').click()" class="flex-1 bg-white text-indigo-700 font-bold py-2.5 px-2 rounded-lg border border-indigo-300 hover:bg-indigo-50 transition text-xs flex justify-center items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-upload"></i> 불러오기
-                    </button>
+                    <button onclick="saveTxTemplate()" class="flex-1 bg-white text-emerald-700 font-bold py-2 px-2 rounded-lg border border-emerald-300 hover:bg-emerald-50 transition text-xs">저장</button>
+                    <button onclick="document.getElementById('file-upload-tx').click()" class="flex-1 bg-white text-indigo-700 font-bold py-2 px-2 rounded-lg border border-indigo-300 hover:bg-indigo-50 transition text-xs">불러오기</button>
                     <input type="file" id="file-upload-tx" class="hidden" accept=".json" onchange="loadTxTemplate(event)">
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <h2 class="text-sm font-bold text-blue-800 border-b border-slate-200 pb-2"><i class="fa-solid fa-calendar mr-1"></i> 발행·당사자</h2>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">발행일</label>
-                    <input type="date" id="tx_issueDate" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" onchange="updateTxDoc()">
-                </div>
+            <label class="flex items-center gap-2 cursor-pointer bg-amber-50 border border-amber-200 rounded-lg p-2.5">
+                <input type="checkbox" id="tx_stamp_visible" class="w-4 h-4 accent-sky-700" checked onchange="toggleTxStamp()">
+                <span class="text-xs font-bold text-amber-900">전자직인 표시</span>
+            </label>
 
-                <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 space-y-2">
-                    <h3 class="text-xs font-bold text-sky-900">공급자 (발권처)</h3>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">상호</label>
-                        <input type="text" id="tx_sup_name" value="(주)플라이유니티" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">사업자번호</label>
-                            <input type="text" id="tx_sup_biz" value="629-88-02559" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">대표</label>
-                            <input type="text" id="tx_sup_ceo" value="김대현" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">주소</label>
-                        <input type="text" id="tx_sup_addr" value="강원특별자치도 강릉시 경강로 2141 (옥천동)" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">연락처</label>
-                        <input type="text" id="tx_sup_tel" value="070-4888-5077" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                    </div>
-                </div>
-
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
-                    <h3 class="text-xs font-bold text-slate-800">공급받는자 (계약여행사)</h3>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">상호</label>
-                        <input type="text" id="tx_buy_name" value="주식회사 투어메이커" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">사업자번호</label>
-                            <input type="text" id="tx_buy_biz" value="473-81-03183" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">대표</label>
-                            <input type="text" id="tx_buy_ceo" value="이재명" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">주소</label>
-                        <input type="text" id="tx_buy_addr" value="강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">연락처</label>
-                        <input type="text" id="tx_buy_tel" value="033-562-2551" placeholder="선택 입력" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="updateTxDoc()">
-                    </div>
-                </div>
-            </div>
-
-            <div class="space-y-3">
-                <div class="flex justify-between items-center border-b border-slate-200 pb-2">
-                    <h2 class="text-sm font-bold text-emerald-700"><i class="fa-solid fa-list mr-1"></i> 차수별 발권 내역</h2>
-                    <button type="button" onclick="addTxRow()" class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-bold hover:bg-emerald-200"><i class="fa-solid fa-plus"></i> 차수 추가</button>
-                </div>
-                <div id="tx-row-inputs" class="space-y-3"></div>
-            </div>
-
-            <div class="space-y-3">
-                <h2 class="text-sm font-bold text-slate-800 border-b border-slate-200 pb-2"><i class="fa-solid fa-plane mr-1"></i> 확인 문구</h2>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">항공사 / 좌석등급</label>
-                    <input type="text" id="tx_airline" value="에어로케이항공(RF) 이코노미" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateTxDoc()">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">항공운임 (1인)</label>
-                        <input type="text" id="tx_fareBase" value="515400" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateTxDoc()">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">발권수수료 (1인)</label>
-                        <input type="text" id="tx_fareFee" value="20000" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateTxDoc()">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">하단 확인 문장</label>
-                    <textarea id="tx_confirmNote" rows="2" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-blue-500" oninput="updateTxDoc()">위 항공권을 발권하고 대금을 수령하였으며, 사업자 현금영수증(지출증빙)을 발행하였음을 확인합니다.</textarea>
-                </div>
-                <label class="flex items-center gap-2 cursor-pointer bg-amber-50 border border-amber-200 rounded-lg p-3">
-                    <input type="checkbox" id="tx_stamp_visible" class="w-4 h-4 accent-sky-700" checked onchange="updateTxDoc()">
-                    <span class="text-xs font-bold text-amber-900">플라이유니티 전자직인 표시 <span class="font-normal text-amber-700">(실물 날인 시 해제)</span></span>
-                </label>
-            </div>
-
-            <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 mb-8 text-[11px] text-amber-900 leading-relaxed">
-                ※ 자동 연동 시 차수 행은 운임증명서 기준으로 다시 맞춰집니다. 2차 이상이면 반영 후 차수를 추가하고, 현금영수증 번호는 직접 입력하세요. 발행 전 플라이유니티 확인·직인 후 제출하세요.
+            <div class="bg-amber-50 p-3 rounded-lg border border-amber-200 mb-6 text-[11px] text-amber-900 leading-relaxed">
+                표 안에서 인원·1인 금액을 고치면 합계가 자동 계산됩니다. 2차 이상은 [차수 추가] 후 표에서 입력하세요.
             </div>
         </aside>
 
@@ -746,7 +665,7 @@
 
                 <div class="tx-sub shrink-0">
                     <span>문서구분 : <b>발권처 거래명세</b></span>
-                    <span>발행일 : <b id="out_tx_issueDate">____년 __월 __일</b></span>
+                    <span>발행일 : <b id="out_tx_issueDate" contenteditable="true">____년 __월 __일</b></span>
                 </div>
 
                 <table class="tx-table tx-party">
@@ -757,33 +676,42 @@
                     <tr>
                         <th class="role" rowspan="4">공급자</th>
                         <th class="lbl">상호</th>
-                        <td class="val strong" id="out_sup_name"></td>
+                        <td class="val strong" contenteditable="true" id="out_sup_name">(주)플라이유니티</td>
                         <th class="role" rowspan="4">공급<br>받는자</th>
                         <th class="lbl">상호</th>
-                        <td class="val strong" id="out_buy_name"></td>
+                        <td class="val strong" contenteditable="true" id="out_buy_name">주식회사 투어메이커</td>
                     </tr>
                     <tr>
                         <th class="lbl">사업자번호</th>
-                        <td class="val" id="out_sup_biz"></td>
+                        <td class="val" contenteditable="true" id="out_sup_biz">629-88-02559</td>
                         <th class="lbl">사업자번호</th>
-                        <td class="val" id="out_buy_biz"></td>
+                        <td class="val" contenteditable="true" id="out_buy_biz">473-81-03183</td>
                     </tr>
                     <tr>
                         <th class="lbl">대표</th>
-                        <td class="val" id="out_sup_ceo"></td>
+                        <td class="val" contenteditable="true" id="out_sup_ceo">김대현</td>
                         <th class="lbl">대표</th>
-                        <td class="val" id="out_buy_ceo"></td>
+                        <td class="val" contenteditable="true" id="out_buy_ceo">이재명</td>
                     </tr>
                     <tr>
                         <th class="lbl">주소·연락처</th>
-                        <td class="val" id="out_sup_addr"></td>
+                        <td class="val">
+                            <div contenteditable="true" id="out_sup_addr">강원특별자치도 강릉시 경강로 2141 (옥천동)</div>
+                            <div contenteditable="true" id="out_sup_tel">070-4888-5077</div>
+                        </td>
                         <th class="lbl">주소·연락처</th>
-                        <td class="val" id="out_buy_addr"></td>
+                        <td class="val">
+                            <div contenteditable="true" id="out_buy_addr">강원특별자치도 정선군 정선읍 봉양3길 22-10, 3층</div>
+                            <div contenteditable="true" id="out_buy_tel">033-562-2551</div>
+                        </td>
                     </tr>
                 </table>
 
                 <div style="height:14px"></div>
 
+                <div class="flex justify-end mb-1 print-hidden">
+                    <button type="button" onclick="addTxRow()" class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold hover:bg-emerald-200"><i class="fa-solid fa-plus"></i> 행 추가</button>
+                </div>
                 <table class="tx-table" id="tx-preview-table">
                     <thead>
                         <tr>
@@ -799,7 +727,11 @@
                     <tbody id="out_tx_tbody"></tbody>
                 </table>
 
-                <div class="tx-confirm" id="out_tx_confirm"></div>
+                <div class="tx-confirm">
+                    · 항공사 : <span contenteditable="true" id="out_tx_airline">에어로케이항공(RF) 이코노미</span><br>
+                    · 1인 금액 <span id="out_tx_perPerson">535,400원</span> = 항공운임 <span contenteditable="true" id="out_tx_base">515,400</span>원 + 발권수수료 <span contenteditable="true" id="out_tx_fee">20,000</span>원<br>
+                    · <span contenteditable="true" id="out_tx_note">위 항공권을 발권하고 대금을 수령하였으며, 사업자 현금영수증(지출증빙)을 발행하였음을 확인합니다.</span>
+                </div>
 
                 <div class="tx-sign">
                     <div class="issuer-label">위 내용을 확인함</div>
@@ -906,11 +838,13 @@
             const snap = collectFareSnapshot();
             syncingFromFare = true;
             try {
-                if (snap.issueDate) document.getElementById('tx_issueDate').value = snap.issueDate;
-                document.getElementById('tx_fareBase').value = snap.base;
-                document.getElementById('tx_fareFee').value = snap.fee;
-
-                const prevReceipts = txRows.map(r => r.receipt);
+                if (snap.issueDate) {
+                    document.getElementById('tx_issueDate').value = snap.issueDate;
+                    onTxIssueDateChange();
+                }
+                document.getElementById('out_tx_base').innerText = formatNum(snap.base);
+                document.getElementById('out_tx_fee').innerText = formatNum(snap.fee);
+                const prevReceipts = readTxRowsFromDom().map(r => r.receipt);
                 txRows = [{
                     label: '1차',
                     pnr: snap.pnr,
@@ -919,12 +853,23 @@
                     unit: snap.unit,
                     receipt: prevReceipts[0] || ''
                 }];
-                renderTxInputs();
-                updateTxDoc();
+                renderTxTable();
+                refreshTxDerived();
             } finally {
                 syncingFromFare = false;
             }
-            if (showAlert) alert('운임증명서 내용을 플라이유니티 거래명세서에 반영했습니다.\n(현금영수증·2차 이상은 필요 시 직접 보완하세요)');
+            if (showAlert) alert('운임증명서 내용을 플라이유니티 거래명세서에 반영했습니다.\n(현금영수증·2차 이상은 표에서 직접 보완하세요)');
+        }
+
+        function onTxIssueDateChange() {
+            const label = formatKorDate(document.getElementById('tx_issueDate').value);
+            document.getElementById('out_tx_issueDate').innerText = label;
+            document.getElementById('out_tx_signDate').innerText = label;
+        }
+
+        function toggleTxStamp() {
+            const show = document.getElementById('tx_stamp_visible').checked;
+            document.getElementById('out_tx_stamp_box').style.display = show ? 'inline-flex' : 'none';
         }
 
         function switchDoc(type) {
@@ -1096,16 +1041,62 @@
             if (target.hasAttribute('contenteditable')) {
                 e.preventDefault();
                 let text = (e.clipboardData || window.clipboardData).getData('text');
-                text = text.replace(/[\r\n]+/g, ' ').trim();
+                const allowBreak = target.classList.contains('tx-col-route') || target.id === 'out_tx_note';
+                text = allowBreak ? text.replace(/\r\n/g, '\n').trim() : text.replace(/[\r\n]+/g, ' ').trim();
                 
                 const selection = window.getSelection();
                 if (!selection.rangeCount) return;
                 selection.deleteFromDocument();
-                selection.getRangeAt(0).insertNode(document.createTextNode(text));
-                selection.collapseToEnd();
+                if (allowBreak && text.includes('\n')) {
+                    const parts = text.split('\n');
+                    parts.forEach((part, i) => {
+                        selection.getRangeAt(0).insertNode(document.createTextNode(part));
+                        selection.collapseToEnd();
+                        if (i < parts.length - 1) {
+                            const br = document.createElement('br');
+                            selection.getRangeAt(0).insertNode(br);
+                            selection.collapseToEnd();
+                        }
+                    });
+                } else {
+                    selection.getRangeAt(0).insertNode(document.createTextNode(text));
+                    selection.collapseToEnd();
+                }
                 target.dispatchEvent(new Event('input', { bubbles: true }));
             }
         });
+
+        document.getElementById('tx-a4').addEventListener('input', function(e) {
+            if (!e.target.closest('[contenteditable="true"]')) return;
+            if (e.target.classList.contains('tx-col-pax') || e.target.classList.contains('tx-col-unit')) {
+                recalcTxTotals();
+            }
+            if (e.target.id === 'out_tx_base' || e.target.id === 'out_tx_fee') refreshTxDerived();
+            if (e.target.id === 'out_sup_name' || e.target.id === 'out_sup_ceo') refreshTxDerived();
+            if (e.target.id === 'out_tx_issueDate') {
+                document.getElementById('out_tx_signDate').innerText = e.target.innerText.trim();
+            }
+        });
+
+        document.getElementById('tx-a4').addEventListener('blur', function(e) {
+            const t = e.target;
+            if (!t.hasAttribute || !t.hasAttribute('contenteditable')) return;
+            if (t.classList.contains('tx-col-unit')) {
+                const v = parseNum(t.innerText);
+                t.innerText = v ? formatWon(v) : '';
+                recalcTxTotals();
+            }
+            if (t.classList.contains('tx-col-pax')) {
+                const v = parseNum(t.innerText);
+                t.innerText = v ? (v + '명') : '';
+                recalcTxTotals();
+            }
+            if (t.id === 'out_tx_base' || t.id === 'out_tx_fee') {
+                const v = parseNum(t.innerText);
+                t.innerText = v ? formatNum(v) : '0';
+                refreshTxDerived();
+            }
+        }, true);
 
         // --- 4. 운임증명서 템플릿 저장/불러오기 ---
         function saveTemplate() {
@@ -1202,51 +1193,7 @@
             reader.readAsText(file);
         }
 
-        // --- 5. 플라이유니티 거래명세서 ---
-        function renderTxInputs() {
-            const wrap = document.getElementById('tx-row-inputs');
-            wrap.innerHTML = '';
-            txRows.forEach((row, idx) => {
-                const box = document.createElement('div');
-                box.className = 'border border-slate-200 rounded-lg p-3 bg-slate-50 space-y-2';
-                box.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-bold text-slate-700">${idx + 1}번째 차수</span>
-                        <button type="button" onclick="removeTxRow(${idx})" class="text-red-500 text-xs font-bold hover:underline" ${txRows.length <= 1 ? 'disabled style="opacity:0.3"' : ''}><i class="fa-solid fa-trash"></i> 삭제</button>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">구분</label>
-                            <input type="text" value="${escAttr(row.label)}" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="txRows[${idx}].label=this.value; updateTxDoc()">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">예약번호</label>
-                            <input type="text" value="${escAttr(row.pnr)}" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm font-mono" oninput="txRows[${idx}].pnr=this.value; updateTxDoc()">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold text-slate-600 mb-0.5">노선 / 탑승일</label>
-                        <textarea rows="2" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="txRows[${idx}].route=this.value; updateTxDoc()">${escHtml(row.route)}</textarea>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">인원</label>
-                            <input type="number" min="1" value="${row.pax}" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="txRows[${idx}].pax=parseNum(this.value); updateTxDoc()">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">1인 금액</label>
-                            <input type="text" value="${formatNum(row.unit)}" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="txRows[${idx}].unit=parseNum(this.value); updateTxDoc()">
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold text-slate-600 mb-0.5">현금영수증</label>
-                            <input type="text" value="${escAttr(row.receipt)}" class="w-full border border-slate-300 rounded px-2 py-1.5 text-sm" oninput="txRows[${idx}].receipt=this.value; updateTxDoc()">
-                        </div>
-                    </div>
-                `;
-                wrap.appendChild(box);
-            });
-        }
-
+        // --- 5. 플라이유니티 거래명세서 (A4 표 직접 편집) ---
         function escAttr(s) {
             return String(s ?? '').replace(/"/g, '&quot;');
         }
@@ -1254,141 +1201,165 @@
             return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
         }
 
-        function addTxRow() {
-            const n = txRows.length + 1;
-            txRows.push({ label: `${n}차`, pnr: '', route: '', pax: 1, unit: 0, receipt: '' });
-            renderTxInputs();
-            updateTxDoc();
+        function readTxRowsFromDom() {
+            const rows = [];
+            document.querySelectorAll('#out_tx_tbody tr.tx-data-row').forEach(tr => {
+                rows.push({
+                    label: (tr.querySelector('.tx-col-label')?.innerText || '').trim(),
+                    pnr: (tr.querySelector('.tx-col-pnr')?.innerText || '').trim(),
+                    route: (tr.querySelector('.tx-col-route')?.innerText || '').replace(/\r/g, '').trim(),
+                    pax: parseNum(tr.querySelector('.tx-col-pax')?.innerText),
+                    unit: parseNum(tr.querySelector('.tx-col-unit')?.innerText),
+                    receipt: (tr.querySelector('.tx-col-receipt')?.innerText || '').trim()
+                });
+            });
+            return rows;
         }
 
-        function removeTxRow(idx) {
-            if (txRows.length <= 1) return;
-            txRows.splice(idx, 1);
-            renderTxInputs();
-            updateTxDoc();
-        }
-
-        function partyAddrLine(addrId, telId) {
-            const addr = (document.getElementById(addrId).value || '').trim();
-            const tel = (document.getElementById(telId).value || '').trim();
-            if (addr && tel) return `${escHtml(addr)}<br>${escHtml(tel)}`;
-            return escHtml(addr || tel || '');
-        }
-
-        function updateTxDoc() {
-            const issue = document.getElementById('tx_issueDate').value;
-            const dateLabel = formatKorDate(issue);
-            document.getElementById('out_tx_issueDate').innerText = dateLabel;
-            document.getElementById('out_tx_signDate').innerText = dateLabel;
-
-            document.getElementById('out_sup_name').innerText = document.getElementById('tx_sup_name').value;
-            document.getElementById('out_sup_biz').innerText = document.getElementById('tx_sup_biz').value;
-            document.getElementById('out_sup_ceo').innerText = document.getElementById('tx_sup_ceo').value;
-            document.getElementById('out_sup_addr').innerHTML = partyAddrLine('tx_sup_addr', 'tx_sup_tel');
-            document.getElementById('out_buy_name').innerText = document.getElementById('tx_buy_name').value;
-            document.getElementById('out_buy_biz').innerText = document.getElementById('tx_buy_biz').value;
-            document.getElementById('out_buy_ceo').innerText = document.getElementById('tx_buy_ceo').value;
-            document.getElementById('out_buy_addr').innerHTML = partyAddrLine('tx_buy_addr', 'tx_buy_tel');
-            document.getElementById('out_tx_signName').innerText = document.getElementById('tx_sup_name').value || '(주)플라이유니티';
-            document.getElementById('out_tx_signCeo').innerText = document.getElementById('tx_sup_ceo').value || '김대현';
-
-            let totalPax = 0;
-            let totalAmt = 0;
+        function renderTxTable() {
             const tbody = document.getElementById('out_tx_tbody');
             tbody.innerHTML = '';
-
-            txRows.forEach(row => {
+            txRows.forEach((row, idx) => {
                 const pax = parseNum(row.pax);
                 const unit = parseNum(row.unit);
                 const sum = pax * unit;
-                totalPax += pax;
-                totalAmt += sum;
                 const tr = document.createElement('tr');
+                tr.className = 'tx-data-row';
                 tr.innerHTML = `
-                    <td>${escHtml(row.label)}</td>
-                    <td class="font-mono">${escHtml(row.pnr)}</td>
-                    <td>${escHtml(row.route).replace(/\n/g, '<br>')}</td>
-                    <td>${pax}명</td>
-                    <td class="num">${formatWon(unit)}</td>
-                    <td class="num">${formatWon(sum)}</td>
-                    <td>${escHtml(row.receipt)}</td>
+                    <td contenteditable="true" class="tx-col-label">${escHtml(row.label)}</td>
+                    <td contenteditable="true" class="font-mono tx-col-pnr">${escHtml(row.pnr)}</td>
+                    <td contenteditable="true" class="tx-col-route">${escHtml(row.route).replace(/\n/g, '<br>')}</td>
+                    <td contenteditable="true" class="tx-col-pax">${pax ? pax + '명' : ''}</td>
+                    <td contenteditable="true" class="num tx-col-unit">${unit ? formatWon(unit) : ''}</td>
+                    <td class="num tx-col-sum relative">${formatWon(sum)}
+                        <div class="row-ctrl print-hidden"><button type="button" onclick="removeTxRow(${idx})" class="text-red-500 hover:bg-red-50 px-1 rounded"><i class="fa-solid fa-minus"></i></button></div>
+                    </td>
+                    <td contenteditable="true" class="tx-col-receipt">${escHtml(row.receipt)}</td>
                 `;
                 tbody.appendChild(tr);
             });
-
             const totalTr = document.createElement('tr');
             totalTr.className = 'total';
-            totalTr.innerHTML = `
-                <td colspan="3">합 계</td>
-                <td>${totalPax}명</td>
-                <td></td>
-                <td class="num">${formatWon(totalAmt)}</td>
-                <td></td>
-            `;
+            totalTr.id = 'tx-total-row';
+            totalTr.innerHTML = `<td colspan="3">합 계</td><td id="tx-total-pax">0명</td><td></td><td class="num" id="tx-total-amt">0원</td><td></td>`;
             tbody.appendChild(totalTr);
+            recalcTxTotals();
+        }
 
-            const base = parseNum(document.getElementById('tx_fareBase').value);
-            const fee = parseNum(document.getElementById('tx_fareFee').value);
-            const perPerson = base + fee;
-            const airline = document.getElementById('tx_airline').value;
-            const note = document.getElementById('tx_confirmNote').value;
+        function recalcTxTotals() {
+            let totalPax = 0;
+            let totalAmt = 0;
+            document.querySelectorAll('#out_tx_tbody tr.tx-data-row').forEach(tr => {
+                const pax = parseNum(tr.querySelector('.tx-col-pax')?.innerText);
+                const unit = parseNum(tr.querySelector('.tx-col-unit')?.innerText);
+                const sum = pax * unit;
+                const sumEl = tr.querySelector('.tx-col-sum');
+                if (sumEl) {
+                    const btn = sumEl.querySelector('.row-ctrl');
+                    sumEl.innerHTML = formatWon(sum);
+                    if (btn) sumEl.appendChild(btn);
+                }
+                totalPax += pax;
+                totalAmt += sum;
+            });
+            const paxEl = document.getElementById('tx-total-pax');
+            const amtEl = document.getElementById('tx-total-amt');
+            if (paxEl) paxEl.innerText = totalPax + '명';
+            if (amtEl) amtEl.innerText = formatWon(totalAmt);
+        }
 
-            document.getElementById('out_tx_confirm').innerHTML = `
-                · 항공사 : ${escHtml(airline)}<br>
-                · 1인 금액 ${formatWon(perPerson)} = 항공운임 ${formatWon(base)} + 발권수수료 ${formatWon(fee)}<br>
-                · ${escHtml(note)}
-            `;
-
-            const showStamp = document.getElementById('tx_stamp_visible').checked;
-            const stampBox = document.getElementById('out_tx_stamp_box');
-            stampBox.style.display = showStamp ? 'inline-flex' : 'none';
+        function refreshTxDerived() {
+            const base = parseNum(document.getElementById('out_tx_base').innerText);
+            const fee = parseNum(document.getElementById('out_tx_fee').innerText);
+            document.getElementById('out_tx_perPerson').innerText = formatWon(base + fee);
+            document.getElementById('out_tx_signName').innerText = (document.getElementById('out_sup_name').innerText || '').trim() || '(주)플라이유니티';
+            document.getElementById('out_tx_signCeo').innerText = (document.getElementById('out_sup_ceo').innerText || '').trim() || '김대현';
             document.getElementById('out_tx_stamp').src = FLY_STAMP;
+            toggleTxStamp();
+            const issueLabel = (document.getElementById('out_tx_issueDate').innerText || '').trim();
+            if (issueLabel) document.getElementById('out_tx_signDate').innerText = issueLabel;
+        }
+
+        function addTxRow() {
+            txRows = readTxRowsFromDom();
+            if (!txRows.length) txRows = DEFAULT_TX_ROWS.map(r => ({ ...r }));
+            const n = txRows.length + 1;
+            const lastUnit = txRows.length ? parseNum(txRows[txRows.length - 1].unit) : 0;
+            txRows.push({ label: `${n}차`, pnr: '', route: '', pax: 1, unit: lastUnit, receipt: '' });
+            renderTxTable();
+        }
+
+        function removeTxRow(idx) {
+            txRows = readTxRowsFromDom();
+            if (txRows.length <= 1) {
+                alert('최소 1개 행이 필요합니다.');
+                return;
+            }
+            txRows.splice(idx, 1);
+            renderTxTable();
+        }
+
+        function updateTxDoc() {
+            // 호환용: 표 합계·서명만 갱신 (칸 직접편집이 본편집)
+            txRows = readTxRowsFromDom();
+            if (!txRows.length) {
+                txRows = DEFAULT_TX_ROWS.map(r => ({ ...r }));
+                renderTxTable();
+            } else {
+                recalcTxTotals();
+            }
+            refreshTxDerived();
         }
 
         function collectTxData() {
+            txRows = readTxRowsFromDom();
             return {
                 docType: 'tx',
                 issueDate: document.getElementById('tx_issueDate').value,
                 supplierParty: {
-                    name: document.getElementById('tx_sup_name').value,
-                    biz: document.getElementById('tx_sup_biz').value,
-                    ceo: document.getElementById('tx_sup_ceo').value,
-                    addr: document.getElementById('tx_sup_addr').value,
-                    tel: document.getElementById('tx_sup_tel').value
+                    name: document.getElementById('out_sup_name').innerText.trim(),
+                    biz: document.getElementById('out_sup_biz').innerText.trim(),
+                    ceo: document.getElementById('out_sup_ceo').innerText.trim(),
+                    addr: document.getElementById('out_sup_addr').innerText.trim(),
+                    tel: document.getElementById('out_sup_tel').innerText.trim()
                 },
                 buyerParty: {
-                    name: document.getElementById('tx_buy_name').value,
-                    biz: document.getElementById('tx_buy_biz').value,
-                    ceo: document.getElementById('tx_buy_ceo').value,
-                    addr: document.getElementById('tx_buy_addr').value,
-                    tel: document.getElementById('tx_buy_tel').value
+                    name: document.getElementById('out_buy_name').innerText.trim(),
+                    biz: document.getElementById('out_buy_biz').innerText.trim(),
+                    ceo: document.getElementById('out_buy_ceo').innerText.trim(),
+                    addr: document.getElementById('out_buy_addr').innerText.trim(),
+                    tel: document.getElementById('out_buy_tel').innerText.trim()
                 },
-                airline: document.getElementById('tx_airline').value,
-                fareBase: parseNum(document.getElementById('tx_fareBase').value),
-                fareFee: parseNum(document.getElementById('tx_fareFee').value),
-                confirmNote: document.getElementById('tx_confirmNote').value,
+                airline: document.getElementById('out_tx_airline').innerText.trim(),
+                fareBase: parseNum(document.getElementById('out_tx_base').innerText),
+                fareFee: parseNum(document.getElementById('out_tx_fee').innerText),
+                confirmNote: document.getElementById('out_tx_note').innerText.trim(),
                 stampVisible: document.getElementById('tx_stamp_visible').checked,
                 rows: txRows.map(r => ({ ...r }))
             };
         }
 
-        function setPartyFields(prefix, party) {
-            if (!party) return;
-            if (party.name !== undefined) document.getElementById(`tx_${prefix}_name`).value = party.name;
-            if (party.biz !== undefined) document.getElementById(`tx_${prefix}_biz`).value = party.biz;
-            if (party.ceo !== undefined) document.getElementById(`tx_${prefix}_ceo`).value = party.ceo;
-            if (party.addr !== undefined) document.getElementById(`tx_${prefix}_addr`).value = party.addr;
-            if (party.tel !== undefined) document.getElementById(`tx_${prefix}_tel`).value = party.tel;
-        }
-
         function applyTxData(data) {
-            if (data.issueDate !== undefined) document.getElementById('tx_issueDate').value = data.issueDate;
-            if (data.supplierParty) setPartyFields('sup', data.supplierParty);
-            if (data.buyerParty) setPartyFields('buy', data.buyerParty);
-            if (data.airline !== undefined) document.getElementById('tx_airline').value = data.airline;
-            if (data.fareBase !== undefined) document.getElementById('tx_fareBase').value = data.fareBase;
-            if (data.fareFee !== undefined) document.getElementById('tx_fareFee').value = data.fareFee;
-            if (data.confirmNote !== undefined) document.getElementById('tx_confirmNote').value = data.confirmNote;
+            if (data.issueDate !== undefined) {
+                document.getElementById('tx_issueDate').value = data.issueDate;
+                onTxIssueDateChange();
+            }
+            const sp = data.supplierParty || {};
+            const bp = data.buyerParty || {};
+            if (sp.name !== undefined) document.getElementById('out_sup_name').innerText = sp.name;
+            if (sp.biz !== undefined) document.getElementById('out_sup_biz').innerText = sp.biz;
+            if (sp.ceo !== undefined) document.getElementById('out_sup_ceo').innerText = sp.ceo;
+            if (sp.addr !== undefined) document.getElementById('out_sup_addr').innerText = sp.addr;
+            if (sp.tel !== undefined) document.getElementById('out_sup_tel').innerText = sp.tel;
+            if (bp.name !== undefined) document.getElementById('out_buy_name').innerText = bp.name;
+            if (bp.biz !== undefined) document.getElementById('out_buy_biz').innerText = bp.biz;
+            if (bp.ceo !== undefined) document.getElementById('out_buy_ceo').innerText = bp.ceo;
+            if (bp.addr !== undefined) document.getElementById('out_buy_addr').innerText = bp.addr;
+            if (bp.tel !== undefined) document.getElementById('out_buy_tel').innerText = bp.tel;
+            if (data.airline !== undefined) document.getElementById('out_tx_airline').innerText = data.airline;
+            if (data.fareBase !== undefined) document.getElementById('out_tx_base').innerText = formatNum(data.fareBase);
+            if (data.fareFee !== undefined) document.getElementById('out_tx_fee').innerText = formatNum(data.fareFee);
+            if (data.confirmNote !== undefined) document.getElementById('out_tx_note').innerText = data.confirmNote;
             if (data.stampVisible !== undefined) document.getElementById('tx_stamp_visible').checked = !!data.stampVisible;
             txRows = (data.rows && data.rows.length) ? data.rows.map(r => ({
                 label: r.label || '',
@@ -1398,8 +1369,8 @@
                 unit: parseNum(r.unit),
                 receipt: r.receipt || ''
             })) : DEFAULT_TX_ROWS.map(r => ({ ...r }));
-            renderTxInputs();
-            updateTxDoc();
+            renderTxTable();
+            refreshTxDerived();
         }
 
         function saveTxTemplate() {
@@ -1453,14 +1424,15 @@
                 document.getElementById('in_issueDate').value = todayIso;
             }
             document.getElementById('tx_issueDate').value = todayIso;
+            onTxIssueDateChange();
 
             setRep('lee');
             updateDoc();
             calcFareTable();
 
             txRows = DEFAULT_TX_ROWS.map(r => ({ ...r }));
-            renderTxInputs();
-            updateTxDoc();
+            renderTxTable();
+            refreshTxDerived();
             switchDoc('fare');
         });
     </script>
