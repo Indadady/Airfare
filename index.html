@@ -239,7 +239,18 @@
                 overflow: hidden !important;
             }
             #sidebar, #sidebar-tx, header, .print-hidden, .row-ctrl { display: none !important; }
-            #panel-fare, #panel-tx {
+            /* 비활성 탭은 절대 인쇄되지 않음 (ID 강제 display보다 우선) */
+            #panel-fare.hidden,
+            #panel-fare.panel-hidden-print,
+            #panel-tx.hidden,
+            #panel-tx.panel-hidden-print {
+                display: none !important;
+                height: 0 !important;
+                overflow: hidden !important;
+                visibility: hidden !important;
+            }
+            #panel-fare:not(.hidden):not(.panel-hidden-print),
+            #panel-tx:not(.hidden):not(.panel-hidden-print) {
                 margin: 0 !important;
                 padding: 0 !important;
                 width: 210mm !important;
@@ -247,8 +258,9 @@
                 display: block !important;
                 background: #fff !important;
                 overflow: hidden !important;
+                visibility: visible !important;
             }
-            #panel-tx main {
+            #panel-tx:not(.hidden):not(.panel-hidden-print) main {
                 margin: 0 !important;
                 padding: 0 !important;
                 background: #fff !important;
@@ -256,7 +268,6 @@
                 height: 297mm !important;
                 overflow: hidden !important;
             }
-            .panel-hidden-print, .hidden { display: none !important; }
             .a4-page {
                 box-shadow: none !important;
                 margin: 0 !important;
@@ -809,6 +820,8 @@
                 alert('이 앱에서는 인쇄가 어려워요.\n다른 브라우저나 PC에서 열어 주세요.');
                 return;
             }
+            // 현재 탭만 인쇄되도록 클래스 재확인
+            switchDoc(currentDoc || 'fare');
             window.print();
         }
 
